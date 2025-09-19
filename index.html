@@ -1,37 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ar">
   <head>
-    <meta charset="UTF-8" />
-    <title>BomBa Modal Demo</title>
-    <link rel="stylesheet" href="/src/styles.scss" />
-    <script type="module" src="/src/bmodal.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>BomBaModal Demo</title>
   </head>
   <body>
-    <button id="open">Open Modal</button>
+    <main style="padding:2em;">
+      <h1>اختبار BomBaModal</h1>
+      <button id="openModal">فتح نافذة</button>
+      <p>جرب تصغير النافذة والضغط على العنصر في الشريط لاستعادتها.</p>
+    </main>
 
-    <script type="module">
-      import BModal from '../src/bmodal.js';
+  <h1>القيمة: <span id="count">0</span></h1>
+  <button id="inc">+</button>
+  <button id="dec">-</button>
+  <button id="reset">Reset</button>
 
-      // إنشاء نافذة رئيسية
-      const modal1 = new BModal({
-        title: 'Main Modal',
-        content: 'Hello from BomBaModal ✨',
-        closeOnOutside: true,
-      });
+    
 
-      document.getElementById('open').addEventListener('click', () => {
-        modal1.open();
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@reduxjs/toolkit@latest/dist/redux-toolkit.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/redux@latest/dist/redux.min.js"></script> -->
 
-        // نافذة فرعية داخلية بعد ثانيتين
-        setTimeout(() => {
-          const modal2 = new BModal({
-            title: 'Nested Modal',
-            content: 'This is a nested modal 🚀',
-            closeOnOutside: false,
-          });
-          modal2.open();
-        }, 2000);
-      });
-    </script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
