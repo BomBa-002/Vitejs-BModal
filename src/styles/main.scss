@@ -199,3 +199,176 @@
   /*[dir="rtl"] elemint? { }*/
 //#endregion
 
+
+//  ------------------------------------------------
+//  تحت التجربة و الاختبار:
+//  ------------------------------------------------
+
+//#region /* Modal Styles */
+:root {
+  --bm-bg: var(--bg, hsl(0, 0%, 100%));
+  --bm-border: var(--muted, hsl(210, 8%, 48%));
+  --bm-radius: 0.6em;
+  --bm-shadow: 0 0.6em 1.2em rgba(0,0,0,0.3);
+}
+
+.bm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bm-overlay.bm-show { opacity: 1; }
+
+.bm-modal {
+  background: var(--bm-bg);
+  border: 0.1em solid var(--bm-border);
+  // border-radius: var(--bm-radius);
+  box-shadow: var(--bm-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.bm-show .bm-modal {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* شريط العنوان */
+.bm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6em 1em;
+  background: hsl(210, 60%, 45%);
+  color: white;
+  font-weight: bold;
+  user-select: none;
+}
+
+.bm-title {
+  flex: 1;
+}
+
+.bm-controls {
+  display: flex;
+  gap: 0.4em;
+}
+
+.bm-btn {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.bm-btn:hover { transform: scale(1.2); }
+
+.bm-close { background: hsl(0, 70%, 50%); }
+.bm-max { background: hsl(120, 60%, 40%); }
+.bm-min { background: hsl(45, 85%, 50%); }
+
+/* الجسم */
+.bm-body {
+  flex: 1;
+  padding: 1em;
+  overflow: auto;
+}
+
+/* شريط الحالة */
+.bm-footer {
+  padding: 0.5em 1em;
+  background: hsl(0, 0%, 95%);
+  font-size: 0.9em;
+  color: hsl(0, 0%, 35%);
+}
+
+/* Minimized */
+.bm-minimized {
+  height: 2em !important;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+
+//   ------------------------------------------------
+
+.bm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.bm-overlay.bm-show { opacity: 1; }
+
+.bm-modal {
+  background: #fff;
+  border: 0.1em solid #ccc;
+  border-radius: 0.3em; // 0.6em
+  box-shadow: 0 0.6em 1.2em rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.96);
+  opacity: 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.bm-show .bm-modal { transform: scale(1); opacity: 1; }
+
+.bm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4em 1em;
+  background: hsl(210,60%,45%);
+  color: #fff;
+  font-weight: bold;
+  // cursor: move;
+  user-select: none;
+}
+.bm-title { flex: 1; text-align: center; }
+.bm-controls { display: flex; gap: 0.4em; }
+.bm-btn {
+  width: 1em; height: 1em;
+  border-radius: 50%; border: none;
+  cursor: pointer;
+}
+.bm-close { background: hsl(0,70%,50%); }
+.bm-max { background: hsl(120,60%,40%); }
+.bm-min { background: hsl(45,85%,50%); }
+
+.bm-body { flex: 1; padding: 1em; overflow: auto; }
+.bm-footer { padding: 0.5em; background: #f4f4f4; font-size: 0.9em; }
+
+.bm-minimized { height: 2em !important; overflow: hidden; }
+.bm-maximized {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Resizer */
+.bm-resizer {
+  width: 1em; height: 1em;
+  background: transparent;
+  position: absolute;
+  right: 0; bottom: 0;
+  cursor: se-resize;
+}
+
+//#endregion

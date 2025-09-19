@@ -1,26 +1,57 @@
 <!doctype html>
-<html lang="ar">
+<html lang="en" class="system " dir="ltr">
+<!-- <html lang="en" class="light " dir="ltr"> -->
+  <!-- <html class="light dark" lang="ar" dir="rtl"> -->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>BomBaModal Demo</title>
   </head>
   <body>
-    <main style="padding:2em;">
-      <h1>اختبار BomBaModal</h1>
-      <button id="openModal">فتح نافذة</button>
-      <p>جرب تصغير النافذة والضغط على العنصر في الشريط لاستعادتها.</p>
+    <main>
+
+      <!-- Section 1: اختبار BomBaModal -->
+      <details>
+        <summary>
+          Section 1:
+          <span>اختبار BomBaModal</span>
+        </summary>
+        <section>
+          
+          <button id="openModal">فتح نافذة</button>
+          <p>جرب تصغير النافذة والضغط على العنصر في الشريط لاستعادتها.</p>
+
+        </section>
+      </details>
+      
+      <br>
+
+      <!-- Section 2: عداد بسيط مع Redux Toolkit -->
+      <details>
+        <summary>
+          <p class="ellipsis-30ch">
+            Section 2:
+            <span>عداد بسيط مع Redux Toolkit</span>
+          </p>
+        </summary>
+        <section>
+
+          <p class="description">مثال بسيط على استخدام Redux Toolkit مع أزرار لزيادة، نقصان، وإعادة تعيين العداد.</p>
+          
+          <h3>القيمة: <span class="count">0</span></h3>
+          <h3>القيمة: <span class="count">0</span></h3>
+          <h3>القيمة: <span class="count">0</span></h3>
+          
+          <hr>
+          
+          <button class="inc">+</button>
+          <button class="dec">-</button>
+          <button class="reset">Reset</button>
+        </section>
+      </details>
+      
     </main>
 
-  <h1>القيمة: <span id="count">0</span></h1>
-  <button id="inc">+</button>
-  <button id="dec">-</button>
-  <button id="reset">Reset</button>
-
-    
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@reduxjs/toolkit@latest/dist/redux-toolkit.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/redux@latest/dist/redux.min.js"></script> -->
 
     <script type="module" src="/src/main.js"></script>
   </body>
