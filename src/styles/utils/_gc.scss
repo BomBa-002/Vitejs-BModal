@@ -1,0 +1,159 @@
+// *
+// * 📁 src/styles/utils/_gc.scss
+// * @description: ملف المساعدات العامة و الكلاسات المتكررة.
+// * @lastUpdatedAt:[{ "date": "2025-09-27", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
+// *
+@use "sass:list";
+@use "sass:meta";
+
+
+//#region  Transition:-
+/// مكسن trans متقدم
+/// يدعم:
+/// - خاصية واحدة كسلسلة نصية
+/// - خاصية واحدة كمصفوفة (مع مدة وزمن تأخير... إلخ)
+/// - قائمة خصائص، كل واحدة تحتوي على (الخاصية، المدة، الانحناء، التأخير)
+///
+/// ✅ أمثلة استخدام:
+/// @include trans(opacity);
+/// @include trans((opacity, 0.4s, ease-in));
+/// @include trans((opacity, 0.4s), (transform, 0.3s, ease-in-out));
+@mixin trans($transitions...) {
+  $result: ();
+  
+  @each $item in $transitions {
+    @if meta.type-of($item) == 'list' {
+      $len: list.length($item);
+
+      // استخرج القيم باستخدام دوال list الحديثة
+      $property: list.nth($item, 1);
+      $duration: if($len >= 2, list.nth($item, 2), 0.3s);
+      $easing: if($len >= 3, list.nth($item, 3), ease);
+      $delay: if($len >= 4, list.nth($item, 4), 0s);
+
+      $transition: #{$property} #{$duration} #{$easing} #{$delay};
+      $result: list.append($result, $transition, comma);
+    } @else {
+      // إذا كانت خاصية واحدة كنص
+      $result: list.append($result, #{$item} 0.3s ease 0s, comma);
+    }
+  }
+  
+  transition: $result;
+}
+
+//#endregion
+
+// ------------------------------------------------
+// اقصي حد مسموح به لاحرف الكتابة هي 30:
+.ellipsis{
+  &-30ch { // .ellipsis-30ch
+    max-width: 30ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+}
+// ------------------------------------------------
+
+
+
+//#region  Scrollbar:-
+@mixin scrollbar(
+  /* العرض */
+  $width: 0.0001em,
+  /* الخلفية */
+  $track-color: transparent,
+  /* المقبض (thumb) */
+  $thumb-color: #888,
+  /* التفاعل عند التحويم (hover) */
+  $thumb-hover-color: #555,
+  /* الحواف */
+  $radius: 0.5em
+) {
+
+  // للمتصفحات التي تدعم Webkit (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: $width !important;
+    height: $width !important;
+    @include trans((0.3s));
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $radius;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: $radius;
+    border: 0.125em solid $track-color; // لإعطاء فراغ وهمي حول المقبض
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $thumb-hover-color;
+  }
+
+  // لمتصفح Firefox
+  scrollbar-width: thin; // "auto" أو "thin" أو "none"
+  scrollbar-color: $thumb-color $track-color; // المقبض ثم الخلفية
+}
+//#endregion
+
+//#region  divider [hr]:-
+// الفواصل بين الاقسام:
+.divider{
+  // --primary: var(--primary, hsl(160, 80%, 40%));
+  // --secondary: var(--secondary, hsl(330, 80%, 40%));
+  // --accent: var(--accent, hsl(270, 80%, 40%));
+  --text: var(--primary, #0000ff);
+  --br: var(--gray, #00ff00);
+  --fs: 100%;
+  
+  & {
+    position: relative;
+    width: 0.125em; 
+    height: 0.125em; 
+    display: block;
+    font-size: var(--fs);
+    border-radius: calc(0.25em * var(--radius, 1));
+    &:not(:has(.icon)){ box-shadow: 0 0 calc(0.8em * var(--shadow, 1)) hsl(from var(--text) h s l / 40%); }
+  }
+  &.h {width: 90%; &.i { height: fit-content !important; .icon { &::before, &::after { height: 0.125em; } } } --ISdir: right; --ISdirReversed: left; [dir=rtl] & { --ISdir: left; --ISdirReversed: right; } }
+  &.v {height: 90%; &-v.i .icon, &.i{ width: fit-content !important; .icon {flex-direction: column !important; height: 100%; &::before, &::after { width: 0.125em; } } }  --ISdir: bottom; --ISdirReversed: top; }
+  
+  &.n, &.normal, & { background: linear-gradient(to var(--ISdir), transparent, var(--text) , transparent); }
+  &.f, &.fancy { background: linear-gradient(to var(--ISdir), var(--secondary), var(--primary), var(--accent)); }
+  &.d, &.dotted { background: transparent; border:  0.125em dashed var(--text); }
+  &.i, &.icon {
+    background: transparent;
+
+    .icon{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25em;
+      color: var(--text);
+      font-size: 100%;
+      
+      &::before, &::after {
+        content: '';
+        flex: 1;
+        border-radius: 0.2em;
+        background: linear-gradient(to var(--ISdir), transparent, var(--br));
+      }
+
+      &::after { background: linear-gradient(to var(--ISdirReversed), transparent, var(--br)); }
+    }
+  }
+}
+
+// --- { TO USE } --- { عند الاستخدام } ---
+hr, .hr{border: 0; @extend .divider; @extend .h; }
+.hr-v{ // عند استخدام الفاصل عمودي يفضل استخدام كلاسات flex او تحديد ارتفاع العنصر الاب
+  @extend .divider;
+  @extend .v;
+}
+//#endregion

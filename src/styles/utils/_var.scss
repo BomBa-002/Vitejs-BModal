@@ -1,0 +1,100 @@
+// *
+// * 📁 src/styles/utils/_var.scss
+// * @description: الملف الرئيسي لتصدير المساعدات.
+// * @lastUpdatedAt:[{ "date": "2025-09-24", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
+// *
+@use 'sass:math';
+
+// #region : متغيرات عامة Var-CSS3
+:root {
+  //  PRIMARY BASE
+  --ltr: 1;    // للتحكم في القيم التي سيتم عكسها في الوضع العربي
+  --shadow: 1; // للتعامل مع لون الشادو, في حالة if(--shadow: 1) true else (--shadow: 0) fales && $stat: 'prod'
+  --radius: 1; // للتعامل مع الإنحنائات بحواف العنصر, في حالة if(--radius: 1) true else (--radius: 0) fales && $stat: 'prod'
+
+  --h: 160; --s: 80%; --l: 40%; // قيم اللون الرئيسي (primary-hsl)
+  --flip-l: 0%;  --ISD: -1; // تساعد في عكس قيمة (الاسود و الابيض) في الوضع الداكن
+  
+  /* EXTENDED PALETTE */
+  --primary-hsl: var(--h) var(--s) var(--l);
+
+  /* // the Base Colors: */
+  --primary: hsl(var(--primary-hsl, 160, 80%, 40%));
+  --secondary: hsl(from var(--primary) 330 s l);
+  --accent: hsl(from var(--primary) 300 s l);
+  --muted: hsl(from var(--primary) 250 s l);
+
+  --success: hsl(from var(--primary) 130 s l);
+  --danger: hsl(from var(--primary) 5 s l);
+  --warning: hsl(from var(--primary) 60 s l);
+  --info: hsl(from var(--primary) 200 s l);
+  --light: hsl(from var(--primary) h s calc((var(--flip-l) - 95% * var(--ISD) )));
+  --dark: hsl(from var(--primary) h s calc((var(--flip-l) - 5% * var(--ISD) )));
+  // الوان ثابتة لا يتم عكسها مع المود الليلي
+  --gray: hsl(from var(--primary) h 10% 50%);
+  --white: hsl(from var(--primary) h 0% 95%);
+  --black: hsl(from var(--primary) h 0% 5%);
+  // ------------------------------------------
+  
+  --ok: var(--success-hsl);
+  --err: var(--danger-hsl);
+  --warn: var(--warning-hsl);
+  --inf: var(--info-hsl);
+
+  --bg: var(--light);
+  --title: hsl(from var(--dark) h s calc(l * 1.5));
+  --text: var(--dark);
+  --span: hsl(from var(--dark) h s calc(l / 1.5));
+
+
+  /* // the Colors Used in the App: */
+  --card-bg: hsl(from var(--bg) h s calc(l - 5%));
+  --br: hsl(from var(--bg) h 10% 50%);
+  --primary-a02: hsl(from var(--primary) h s l / 0.2);
+  --primary-a04: hsl(from var(--primary) h s l / 0.4);
+  
+  /* // Other Design Variables: */
+  --gap: 0.8em;
+  --radius: 0.7em;
+  --shadow: 0 0.3em 0.6em var(--primary-a02);
+  
+  /* Font */
+  --font-family: "Cairo", sans-serif, 'Inter', system-ui, -apple-system, sans-serif;
+
+  font-size: 16px;
+  color-scheme: light;
+}
+
+.dark, [data-theme="dark"] {
+  --h: 110;
+  --h: 210;
+  --flip-l: 100%; --ISD: 1; // تساعد في عكس قيمة (الاسود و الابيض) في الوضع الداكن
+}
+
+:root{  
+  @for $i from 1 through 9 { --primary-a#{$i}00: hsl(from var(--primary) h s l / #{100% - ( $i * 10% )}); }
+  @for $i from 1 through 9 { --primary-l#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--white)); }
+  @for $i from 1 through 9 { --primary-d#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--black)); }
+}
+//#endregion
+
+// SCSS:=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+// #region : الدوال FUN
+
+  // #region : em|rem|px : التحكم بالوحدات
+    /// @FUNC: Global --> em to replace px to em ...
+    /// @DISC: دالة لتحويل px إلى em
+    @function em($px, $base-font-size: 16) { @return math.div($px, $base-font-size) * 1em; }
+    /// @FUNC: Global --> rem to replace px to rem ...
+    /// @DISC: دالة لتحويل px إلى rem
+    @function rem($px, $base-font-size: 16) { @return math.div($px, $base-font-size) * 1rem; }
+    /// @FUNC: Global --> em to replace px to em ...
+    /// @DISC: دالة لتحويل النسبة المئوية إلى em
+    @function em_($percent, $base-font-size: 16) { @return math.div($percent, 100) * $base-font-size * 1rem; }
+  // #endregion
+
+  // دالة للحصول على اللون (CSS Var أو fallback)
+  @function varColor($name, $fallback) { @return if( $stat == 'dev' , $fallback, hsl(from hsl(unquote(var(--#{$name}-hsl))) h s l / 1)); }
+
+//#endregion

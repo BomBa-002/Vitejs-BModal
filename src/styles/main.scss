@@ -1,64 +1,27 @@
+// * 
+// * 📁 src/styles/main.scss
+// * @description: الملف الرئيسي لربط جميع أنماط SCSS في المشروع.
+// * @lastUpdatedAt:[{ "date": "2025-09-24", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
+// * 
+
+@use './utils' as *;                 // الأدوات المساعدة أولاً
+@use './lib/normalize' as *;         // الأنماط الأساسية و المكانب الخارجية
+@use './lib/myTailwind' as *;        // مكتبة من صناعتي الخاصة لأنماط شبيهة بمكتبة التايلويند
+// @use './lib/base' as *;              // الأنماط الأساسية و المكانب الخارجية
+// @use './controls' as *;               // أنماط التخطيطات
+// @use './components' as *;            // أنماط المكونات العامة
+// @use './pages' as *;                 // أنماط خاصة بالصفحات (إذا وجدت)
+
+
 
 //#region /* Main Styles */
 
-:root {
-  // Color System:
-  --h: 160; --s: 80%; --l: 40%; --pl:20%;
-  --flip-l: 0%; --ISD: -1; --ltr: 1;
-  [dir="rtl"] & { --ltr: -1; }
-  --primary-hsl: var(--h) var(--s) var(--pl);
-  --secondary-hsl: 330 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
-  --accent-hsl: 270 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
+// :root{--h:160;--s:80%;--l:40%;--pl:20%;--flip-l:0%;--ISD:-1;--ltr:1;--primary-hsl:var(--h) var(--s) var(--pl);--secondary-hsl:330 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--accent-hsl:270 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--success-hsl:134 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--danger-hsl:6 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--warning-hsl:60 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--info-hsl:197 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--light-hsl:var(--h) 10% calc((var(--flip-l) - 96% * var(--ISD) ));--dark-hsl:var(--h) 20% calc((var(--flip-l) - 10% * var(--ISD) ));--muted-hsl:var(--h) 10% 50%;--white-hsl:var(--h) 0% 100%;--black-hsl:var(--h) 0% 0%;--bg:hsl(var(--light-hsl, 0, 0%, 100%));--title:hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l * 1.5));--text:hsl(var(--dark-hsl, 0, 0%, 0%));--span:hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l / 1.5));--primary:hsl(var(--primary-hsl, 160, 80%, 40%));--secondary:hsl(var(--secondary-hsl, 330, 80%, 100%));--accent:hsl(var(--accent-hsl, 270, 80%, 100%));--muted:hsl(var(--muted-hsl, 210, 8%, 48%));--ok:hsl(var(--success-hsl, 130, 80%, 100%));--err:hsl(var(--danger-hsl, 0, 80%, 100%));--warn:hsl(var(--warning-hsl, 40, 80%, 100%));--inf:hsl(var(--info-hsl, 200, 80%, 100%));--card-bg:hsl(from var(--bg) h s calc(l - 5%));--br:hsl(from var(--bg) h 10% 50%);--primary-a02:hsl(from var(--primary) h s l / 0.2);--primary-a04:hsl(from var(--primary) h s l / 0.4);--gap:0.8em;--radius:0.7em;--shadow:0 0.3em 0.6em var(--primary-a02);--font-family:"Cairo",sans-serif,'Inter',system-ui,-apple-system,sans-serif;font-size:16px;color-scheme:light}[dir=rtl] :root{--ltr:-1}.dark,[data-theme=dark]{--h:110;--pl:60%;--flip-l:100%;--ISD:1}
 
-  --success-hsl: 134  var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
-  --danger-hsl: 6  var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
-  --warning-hsl: 60  var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
-  --info-hsl: 197  var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));
-  --light-hsl: var(--h) 10% calc((var(--flip-l) - 96% * var(--ISD) ));
-  --dark-hsl: var(--h) 20% calc((var(--flip-l) - 10% * var(--ISD) ));
-  --muted-hsl: var(--h)  10% 50%; 
-  --white-hsl: var(--h)  0% 100%; 
-  --black-hsl: var(--h)  0% 0%; 
-
-  // the Base Colors:
-  --bg: hsl(var(--light-hsl, 0, 0%, 100%));
-  --title: hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l * 1.5));
-  --text: hsl(var(--dark-hsl, 0, 0%, 0%));
-  --span: hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l / 1.5));
-      
-  --primary: hsl(var(--primary-hsl, 160, 80%, 40%));
-  --secondary: hsl(var(--secondary-hsl, 330, 80%, 100%));
-  --accent: hsl(var(--accent-hsl, 270, 80%, 100%));
-  --muted: hsl(var(--muted-hsl, 210, 8%, 48%));
-  
-  --ok: hsl(var(--success-hsl, 130, 80%, 100%));
-  --err: hsl(var(--danger-hsl, 0, 80%, 100%));
-  --warn: hsl(var(--warning-hsl, 40, 80%, 100%));
-  --inf: hsl(var(--info-hsl, 200, 80%, 100%));
-
-  // the Colors Used in the App:
-  --card-bg: hsl(from var(--bg) h s calc(l - 5%));
-  --br: hsl(from var(--bg) h 10% 50%);
-  --primary-a02: hsl(from var(--primary) h s l / 0.2);
-  --primary-a04: hsl(from var(--primary) h s l / 0.4);
-  
-  // Other Design Variables:
-  --gap: 0.8em;
-  --radius: 0.7em;
-  --shadow: 0 0.3em 0.6em var(--primary-a02);
-
-  --font-family: "Cairo", sans-serif, 'Inter', system-ui, -apple-system, sans-serif;
-  
-  font-size: 16px;
-  color-scheme: light;
-}
-.dark, [data-theme="dark"] {
-  --h: 110; --pl:60%;
-  --flip-l: 100%; --ISD: 1;
-}
-
-
+// Bast Normalize:
   *{margin: 0; padding: 0; box-sizing:border-box}
+  i { font-style: normal; }
+
   body{
     width: 100%;
     min-height: 100dvh;
@@ -72,33 +35,62 @@
     color: var(--text);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
+
+    overflow: hidden;
   }
 
 
-  main{
-    margin: 0;
-    padding: 2em;
+  
+  header.header-master {
+    & {
+      padding: em(8);
+      width: 100%;
+      box-shadow: var(--shadow);
 
+      display: flex;
+    }
+
+    .logo{
+      font-size: 120%;
+      margin-inline-end: em(4);
+    }
+    sub{
+      font-size: 50%;
+      color: var(--secondary);
+      display: inline-block;
+      transform: translateX(-50%);
+    }
+    
+  }
+
+  main.main-master{
+    padding: 0.2em;
     width: 100%;
-    height: 100dvh;
+    max-height: 100dvh;
+    flex: 1;
 
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    gap: 1.5em;
-  }
+    // gap: 1.5em;
 
-
-  // اقصي حد مسموح به لاحرف الكتابة هي 30:
-  .ellipsis{
-    &-30ch { // .ellipsis-30ch
-      max-width: 30ch;
-      white-space: nowrap;
+    // background: red;
+    
+    
+    & { 
       overflow: hidden;
-      text-overflow: ellipsis;
-      display: inline-block;
+      @include scrollbar(
+        $width: 0.5em,
+        $thumb-color: var(--primary),
+        $thumb-hover-color: var(--bg),
+        $radius: 0.5em
+      );
+      &:hover, &:focus-within { 
+        // padding-inline-start: 0.5em;
+        overflow: auto; }
     }
+
   }
 
 //#endregion
@@ -132,8 +124,8 @@
 
   details {
     width: 100%;
-    max-width: 40em;
-    border-radius: 1em;
+    // max-width: 40em;
+    border-radius: 0.6em;
     box-shadow: var(--shadow);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -143,11 +135,12 @@
     transform: translateY(-0.2em);
     box-shadow: 0 0.5em 1em var(--primary-a04);
   }
-
+  
   summary {
     cursor: pointer;
-    padding: 1em 1.2em;
-    font-size: 1.1em;
+    padding: 0.4em 1em;
+    width: 100%;
+    font-size: 100%;
     font-weight: 600;
     background: var(--primary);
     color: var(--bg);
@@ -156,6 +149,32 @@
     list-style: none;
     position: relative;
     user-select: none;
+
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .title{
+      position: relative;
+      &::before{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 0.125em;
+        bottom: -0.25em;
+        inset-inline-start: 0;
+        transition: all 2.3s ease;
+        --ISdir: right;
+        [dir=rtl] & { --ISdir: left; }
+        background: linear-gradient(to Var(--ISdir), var(--bg) -50%, transparent);
+      }
+    }
+    
+    &:hover{
+      .title::before{
+        background: linear-gradient(to Var(--ISdir), var(--accent) 50%, transparent);
+      }
+    }
   }
 
   summary::marker {
@@ -169,13 +188,15 @@
     transition: transform 0.3s ease;
   }
 
-  details[open] summary::after {
+  details[open] > summary::after {
     content: "➖";
     transform: rotate(180deg);
   }
 
-  details section {
-    padding: 1em 1.2em;
+  details section.main {
+    height: clamp(5rem, 100vh, 30rem);
+    overflow: auto;
+
   }
 
   details .description {
@@ -194,6 +215,23 @@
       transform: translateY(0);
     }
   }
+
+
+  .details {
+    &-2{
+      box-shadow: 0 0em 1em var(--primary-a04);
+      
+        summary {
+          cursor: pointer;
+          background: inherit;
+          color: inherit;
+
+          .title{ &::before{ background: linear-gradient(to Var(--ISdir), var(--primary) -50%, transparent); } }
+
+        }
+    }
+  }
+
 
   /* دعم اللغة العربية */
   /*[dir="rtl"] elemint? { }*/
@@ -372,3 +410,127 @@
 }
 
 //#endregion
+
+
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+//#region { 🧪 Color palette }
+
+// SCSS Variables
+$primary: var(--primary);
+$secondary: var(--secondary);
+$light: var(--light);
+$dark: var(--dark);
+$gray: var(--gray);
+$success: var(--success);
+$danger: var(--danger);
+$info: var(--info);
+$warning: var(--warning);
+$primary-L10: var(--primary-L10);
+$primary-D10: var(--primary-D10);
+
+$btn-bg: var(--btn-bg);
+$btn-bg-hover: var(--btn-bg-hover);
+$btn-text: var(--btn-text);
+
+.color-showcase {
+  font-size: var(--fs, 40%);
+  & {
+    // max-width: 80em;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 2em;
+    text-align: start;
+  }
+
+  header{
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2em;
+    
+    h1 {
+      font-size: 200%;
+    }
+
+    .theme-toggle {
+      padding: 0.8em 2em;
+      background: $btn-bg;
+      color: $btn-text;
+      border: none;
+      border-radius: 0.5em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: $btn-bg-hover;
+      }
+    }
+
+  }
+
+  .grid {
+    font-size: var(--fs, 100%);
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+    gap: 0.5em;
+    justify-content: center;
+  }
+
+  .card {
+    background-color: $light;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-shadow: 0 0.25em 0.5em var(--primary-a02);
+    text-align: start;
+
+    .color-box {
+      background-color: var(--color);
+      width: 100%;
+      height: 5em;
+      border-radius: 0.5em;
+      margin-bottom: 1em;
+      border: 0.1em solid $dark;
+    }
+
+    h2 {
+      font-size: 220%;
+      margin-bottom: 0.3em;
+    }
+
+    code {
+      font-size: 190%;
+      color: $gray;
+    }
+  }
+}
+//#endregion
+
+
+// ------------------------------------------------
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 0 1em var(--primary-a04);
+  padding: 1em;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-0.2em);
+    box-shadow: 0 0.5em 1em var(--primary-a04);
+  }
+}
+
+// ------------------------------------------------
+// الفواصل بين الاقسام:
+.first, .second{ flex:1; height: 10em; @extend .content-center; }

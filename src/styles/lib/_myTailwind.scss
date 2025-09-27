@@ -1,0 +1,285 @@
+
+/**
+ * 📁 src/styles/lab/_myTailwind.scss
+ * @description: [ ]TODO: هذا الملف يحتوي على إعدادات Tailwind المخصصة, يتم استخدامه لتسهيل تطوير الواجهة, يجب حذفه قبل رفع المشروع و تسليمة, لا ينصح به في المشاريع كبيرة الحجم.
+ * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
+ */
+
+@use 'sass:math';
+
+// #region : متغيرات SCSS
+/**
+ * 📁 src/styles/utils/_var.scss
+ * @description: متغيرات الألوان، المسافات، و نقاط التوقف.
+ * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
+ */
+
+
+// :root{
+// --gap: 1rem; // المسافة الافتراضية بين العناصر
+// }
+
+// --------------------------------------------------------
+// الألوان (Colors)
+// يتم تعريفها هنا لتسهيل التعديل عليها لاحقًا
+// --------------------------------------------------------
+$primary: hsl(210, 80%, 40%);
+$secondary: hsl(300, 80%, 40%);
+$accent: hsl(270, 80%, 40%);
+$muted: hsl(350, 80%, 40%);
+
+$success: hsl(140, 80%, 40%);
+$danger: hsl(0, 80%, 40%);
+$warning: hsl(39, 80%, 40%);
+$info: hsl(210, 80%, 40%);
+$light: hsl(210, 80%, 95%);
+$dark: hsl(210, 80%, 5%);
+// الوان ثابتة لا يتم عكسها مع المود الليلي
+$gray: hsl(210, 10%, 50%);
+$white: hsl(210, 0%, 95%);
+$black: hsl(210, 0%, 5%);
+
+// --------------------------------------------------------
+// المسافات (Spacing)
+// تستخدم لإنشاء الهوامش الداخلية والخارجية (padding, margin)
+// --------------------------------------------------------
+$spacing: (
+  0: 0,
+  1: 0.25rem,    // 4px
+  2: 0.5rem,     // 8px
+  3: 0.75rem,    // 12px
+  4: 1rem,       // 16px
+  5: 1.5rem,     // 24px
+  6: 2rem,       // 32px
+  7: 2.5rem,     // 40px
+  8: 3rem,       // 48px
+  9: 3.5rem,     // 56px
+  10: 4rem,      // 64px
+  11: 4.5rem,    // 72px
+  12: 5rem       // 80px
+) !default;
+
+// --------------------------------------------------------
+// نقاط التوقف (Breakpoints)
+// يتم استخدامها لعمل التصميم المتجاوب (Responsive)
+// Mobile-First Approach (يبدأ من الأصغر ثم للأكبر)
+// --------------------------------------------------------
+$mb-sm: 640px;        //  Mobile
+$mb-md: 768px;        //  Tablet
+$mb-lg: 1024px;       //  Desktop
+$mb-xl: 1280px;       //  Widescreen
+$mb-xxl: 1536px;      //  Extra Large
+
+// #endregion
+
+// #region : العمليات SCSS
+/**
+ * 📁 src/styles/utils/_mixin.scss
+ * @description: خلطات SCSS لتسهيل كتابة الأنماط المعقدة و المتكررة.
+ * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف الخلطات" } ]
+ */
+// @import '_var.scss';
+
+// --------------------------------------------------------
+// خلطة flexbox
+// لتسهيل تنسيق العناصر باستخدام flexbox
+// @param $direction: اتجاه العناصر
+// @param $wrap: التفاف العناصر
+// @param $justify: محاذاة العناصر على المحور الأساسي
+// @param $align: محاذاة العناصر على المحور المتقاطع
+// --------------------------------------------------------
+@mixin Flex($direction: row, $wrap: nowrap, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// --------------------------------------------------------
+// خلطة grid
+// لتسهيل إنشاء تخطيط الشبكة
+// @param $columns: عدد الأعمدة
+// @param $gap: المسافة بين العناصر
+// --------------------------------------------------------
+@mixin Grid($columns: 1, $gap: var(--gap, 1rem)) {
+  display: grid;
+  grid-template-columns: repeat(#{$columns}, minmax(250px, 1fr));
+  gap: $gap;
+}
+
+// --------------------------------------------------------
+// خلطة لتحديد الحجم
+// لتسهيل تحديد عرض وارتفاع العناصر
+// @param $w: العرض
+// @param $h: الارتفاع
+// --------------------------------------------------------
+@mixin Size($w: null, $h: null) {
+  @if $w { width: $w; }
+  @if $h { height: $h; }
+  @else { width: $w; height: $w; }
+}
+
+// --------------------------------------------------------
+// خلطة لتطبيق الأنماط على نقاط التوقف (Breakpoints)
+// @param $breakpoint: نقطة التوقف
+// --------------------------------------------------------
+@mixin Responsive($breakpoint) { @media (min-width: $breakpoint) { @content; } }
+@mixin sm { @media (min-width: #{$mb-sm}) { @content; } }
+@mixin md { @media (min-width: #{$mb-md}) { @content; } }
+@mixin lg { @media (min-width: #{$mb-lg}) { @content; } }
+@mixin xl { @media (min-width: #{$mb-xl}) { @content; } }
+@mixin xxl { @media (min-width: #{$mb-xxl}) { @content; } }
+
+// #endregion
+
+// #region : كلسات عامة SCSS
+/**
+ * 📁 src/styles/utils/_globalClass.scss
+ * @description: كلاسات SCSS عامة تشبه فكرة 'tailwind' لتسريع التطوير.
+ * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء مكتبة الكلاسات العامة" } ]
+ */
+// @import '_var.scss';
+// @import '_mixin.scss';
+
+// --------------------------------------------------------
+// كلاسات Flexbox
+// flex: لتفعيل flexbox
+// flex-col: لتغيير الاتجاه إلى عمود
+// items-center: لمحاذاة العناصر عموديًا
+// justify-center: لمحاذاة العناصر أفقيًا
+// gap-*: لإضافة مسافة بين العناصر
+// --------------------------------------------------------
+.flex { @include Flex(); }
+.flex-row, .flex-h { @include Flex($direction: row); }
+.flex-col, .flex-v { @include Flex($direction: column); }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+.flex-1 { flex: 1; }
+.flex-auto { flex: 1 1 auto; }
+.flex-none { flex: none; }
+
+.content-center { align-content: center; }
+.content-start { align-content: flex-start; }
+.content-end { align-content: flex-end; }
+.content-between { align-content: space-between; }
+.content-around { align-content: space-around; }
+.content-stretch { align-content: stretch; }
+
+// === نظام الشبكة (Grid System) ===
+.grid { display: grid; }
+
+// --------------------------------------------------------
+// كلاسات المسافات (Spacing)
+// p-*: padding
+// px-*: padding-inline
+// py-*: padding-block
+// m-*: margin
+// mx-*: margin-inline
+// my-*: margin-block
+// --------------------------------------------------------
+// === كلاسات الهيكل (Layout) ===
+// كلاسات المسافات (Margin و Padding)
+@for $i from 1 through 24 {
+  
+  // كلاسات الهامش الفردي
+  .m-#{$i} { margin: #{$i * 0.25}rem; }
+  .mx-#{$i} { margin-inline: #{$i * 0.25}rem; }
+  .my-#{$i} { margin-block: #{$i * 0.25}rem; }
+  .mt-#{$i} { margin-block-start: #{$i * 0.25}rem; }
+  .mb-#{$i} { margin-block-end: #{$i * 0.25}rem; }
+  .ml-#{$i} { margin-inline-start: #{$i * 0.25}rem; }
+  .mr-#{$i} { margin-inline-end: #{$i * 0.25}rem; }
+  // كلاسات الحشو الفردي
+  .p-#{$i} { padding: #{$i * 0.25}rem; }
+  .px-#{$i} { padding-inline: #{$i * 0.25}rem; }
+  .py-#{$i} { padding-block: #{$i * 0.25}rem; }
+  .pt-#{$i} { padding-block-start: #{$i * 0.25}rem; }
+  .pb-#{$i} { padding-block-end: #{$i * 0.25}rem; }
+  .pl-#{$i} { padding-inline-start: #{$i * 0.25}rem; }
+  .pr-#{$i} { padding-inline-end: #{$i * 0.25}rem; }
+  // كلاسات المسافات بين العناصر (Gap)
+  .gap-#{$i} { gap: #{$i * 0.25}rem; }
+  .gap-x-#{$i} { column-gap: #{$i * 0.25}rem; }
+  .gap-y-#{$i} { row-gap: #{$i * 0.25}rem; }
+  // كلاسات حجم النص
+  .text-#{$i} { font-size: #{$i * 25%}; }
+
+  // كلاسات الشبكة
+  .grid-#{$i} { @include Grid($i); }
+
+  // كلاسات الحجم (Width و Height)
+  .w-#{math.div( ($i * 10) , 2 )} { width: #{ math.div( ($i * 10) , 2 ) * 1% }; }  // w5-w12 = 5% to 120% 
+  .h-#{math.div( ($i * 10) , 2 )} { height: #{ math.div( ($i * 10) , 2 ) * 1% }; }
+}
+// كلاسات العرض بنسب مئوية
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-fit { width: fit-content; }
+.w-25 { width: 25%; }
+.w-75 { width: 75%; }
+.w-33 { width: 33.333%; }
+.w-66 { width: 66.666%; }
+// كلاسات الارتفاع بنسب مئوية
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.h-fit { height: fit-content; }
+.h-25 { height: 25%; }
+.h-50 { height: 50%; }
+.h-75 { height: 75%; }
+.h-33 { height: 33.333%; }
+.h-66 { height: 66.666%; }
+
+// === كلاسات الخلفية (Background Colors) ===
+.bg-primary { background: $primary; }
+.bg-secondary { background: $secondary; }
+.bg-success { background: $success; }
+.bg-danger { background: $danger; }
+.bg-warning { background: $warning; }
+.bg-info { background: $info; }
+.bg-dark { background: $dark; }
+.bg-light { background: $light; }
+.bg-gray { background: $gray; }
+.bg-white { background: $white; }
+.bg-black { background: $black; }
+.bg-r { background: hsla(0, 100%, 50%, 80%); }
+.bg-b { background: hsla(240, 100%, 50%, 80%); }
+.bg-g { background: hsla(120, 100%, 50%, 80%); }
+.bg-y { background: hsla(60, 100%, 50%, 80%); }
+.br-r { border: 0.6125em solid hsla(0, 100%, 50%, 80%); }
+.br-b { border: 0.6125em solid hsla(240, 100%, 50%, 80%); }
+.br-g { border: 0.6125em solid hsla(120, 100%, 50%, 80%); }
+.br-y { border: 0.6125em solid hsla(60, 100%, 50%, 80%); }
+
+// === كلاسات النص (Text Utilities) ===
+.text-primary { color: $primary; }
+.text-secondary { color: $secondary; }
+.text-success { color: $success; }
+.text-danger { color: $danger; }
+.text-warning { color: $warning; }
+.text-info { color: $info; }
+.text-dark { color: $dark; }
+.text-light { color: $light; }
+.text-gray { color: $gray; }
+.text-white { color: $white; }
+.text-black { color: $black; }
+
+// كلاسات محاذاة النص
+.text-center { text-align: center; }
+.text-start { text-align: start; }
+.text-end { text-align: end; }
+
+// كلاسات حجم النص
+.text-sm { font-size: 0.875rem; }  // 14px
+.text-base { font-size: 1rem; }    // 16px
+.text-lg { font-size: 1.125rem; }  // 18px
+.text-xl { font-size: 1.25rem; }   // 20px
+.text-2xl { font-size: 1.5rem; }   // 24px
+// #endregion
