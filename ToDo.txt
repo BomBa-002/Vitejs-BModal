@@ -8,35 +8,35 @@
     $ rm -rf ./*                      # (إختياري) امر حذف جميع ما بداخل الملف الحالي
     $ rm -rf ./* .[^.] .??*           # أو مع إظهار الملفات المخفية (مثل .gitignore, .env …):
 
-  # 1) إنشاء المشروع بداخل المجلد الحالي مع إتباع القواعد الموصي بها
-    $ npx create-next-app@latest ./ --ts --eslint --src-dir --app --import-alias "@/*" --no-tailwind --no-cache --turbopack
+    # 1) إنشاء المشروع بداخل المجلد الحالي مع إتباع القواعد الموصي بها
+      $ npx create-next-app@latest ./ --ts --eslint --src-dir --app --import-alias "@/*" --no-tailwind --no-cache --turbopack
 
-    $ pnpm create vite .
-    $ yarn create vite .
-    $ yarn dev
-    
-  # 2) تثبيت أهم المكاتب التي سنعتمد عليها
-    # 🚀 1. أمر تثبيت المكتبات الأساسية
-    yarn add sass 
-      # 💡 شرح المكتبات:
-      # sass: لتفعيل استخدام SCSS بدلاً من TailwindCSS.
-    # 🚀 2. مكتبات التطوير (devDependencies)
-    yarn add -D eslint-plugin-jsx-a11y javascript-obfuscator
-      # 💡 شرح المكتبات:
-      # eslint-plugin-jsx-a11y: إضافة لـ ESLint تركز على قواعد الوصولية في JSX/React، وتساعدك على اكتشاف الأخطاء التي قد تمنع ذوي الاحتياجات الخاصة من استخدام التطبيق.
-      # javascript-obfuscator: يقوم بتشفير وتضليل الكود الخاص بالواجهة الأمامية (JS) في مرحلة الـ Build لزيادة صعوبة قراءته.
+      $ pnpm create vite .
+      $ yarn create vite .
+      $ yarn dev
+      
+    # 2) تثبيت أهم المكاتب التي سنعتمد عليها
+      # 🚀 1. أمر تثبيت المكتبات الأساسية
+      yarn add sass 
+        # 💡 شرح المكتبات:
+        # sass: لتفعيل استخدام SCSS بدلاً من TailwindCSS.
+      # 🚀 2. مكتبات التطوير (devDependencies)
+      yarn add -D eslint-plugin-jsx-a11y javascript-obfuscator
+        # 💡 شرح المكتبات:
+        # eslint-plugin-jsx-a11y: إضافة لـ ESLint تركز على قواعد الوصولية في JSX/React، وتساعدك على اكتشاف الأخطاء التي قد تمنع ذوي الاحتياجات الخاصة من استخدام التطبيق.
+        # javascript-obfuscator: يقوم بتشفير وتضليل الكود الخاص بالواجهة الأمامية (JS) في مرحلة الـ Build لزيادة صعوبة قراءته.
 
-  # 3) إنشاء البنية الاولية للمشروع
-    # 1. حذف ملف [public, src] و ملفات المشروع الإفترادي:
-    rm -rf ./src ./public
-    # 2. إعادة إنشاء الهيكل المفضل
-      # إنشاء المجلدات
-      mkdir -p src/{assets/{icons,images},app/[locale],components/{Layout,Global},hooks,i18n/{locales/{ar,en},config},routes,services,store/{slices/auth/act,thunks},styles/{lib,utils,components,layouts},types,utils}
-      # إنشاء الملفات
-      touch src/{assets/{icons.svg,images.svg},app/{[locale]/{layout.tsx,page.tsx},head.tsx},components/{Layout/{_header.scss,_footer.scss},Global/{_BUI_buttons.scss,_BUI_forms.scss}},i18n/{locales/{ar/index.ts,en/index.ts},config.ts,generate-json-locales.ts},routes/{AppRouter.tsx,index.ts},store/{slices/{auth/{act/actAuth.ts,authSlice.ts},settingsSlice.ts},index.ts},styles/{main.scss,lib/_normalize.scss,utils/{_index.scss,_var.scss,_fun.scss,_mixin.scss}},types/{auth.types.ts,global.types.ts,router.types.ts,shared.types.ts,index.ts},utils/{alias-Image-Icons.ts,alias.ts,B_lips.ts}}
+    # 3) إنشاء البنية الاولية للمشروع
+      # 1. حذف ملف [public, src] و ملفات المشروع الإفترادي:
+      rm -rf ./src ./public
+      # 2. إعادة إنشاء الهيكل المفضل
+        # إنشاء المجلدات
+        mkdir -p src/{assets/{icons,images},app/[locale],components/{Layout,Global},hooks,i18n/{locales/{ar,en},config},routes,services,store/{slices/auth/act,thunks},styles/{lib,utils,components,layouts},types,utils}
+        # إنشاء الملفات
+        touch src/{assets/{icons.svg,images.svg},app/{[locale]/{layout.tsx,page.tsx},head.tsx},components/{Layout/{_header.scss,_footer.scss},Global/{_BUI_buttons.scss,_BUI_forms.scss}},i18n/{locales/{ar/index.ts,en/index.ts},config.ts,generate-json-locales.ts},routes/{AppRouter.tsx,index.ts},store/{slices/{auth/{act/actAuth.ts,authSlice.ts},settingsSlice.ts},index.ts},styles/{main.scss,lib/_normalize.scss,utils/{_index.scss,_var.scss,_fun.scss,_mixin.scss}},types/{auth.types.ts,global.types.ts,router.types.ts,shared.types.ts,index.ts},utils/{alias-Image-Icons.ts,alias.ts,B_lips.ts}}
 
-  # 4) قم بتنسيق الكود داخل الملفات
-```
+    # 4) قم بتنسيق الكود داخل الملفات
+  ```
 
 ---------- ---------- ---------- ---------- ---------- ---------- ----------
 
