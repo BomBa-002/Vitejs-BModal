@@ -39,17 +39,10 @@
   // the Colors Used in the App:
   --card-bg: hsl(from var(--bg) h s calc(l - 5%));
   --br: hsl(from var(--bg) h 10% 50%);
-  --primary-a02: hsl(from var(--primary) h s l / 0.2);
-  --primary-a04: hsl(from var(--primary) h s l / 0.4);
   
   // Other Design Variables:
-  --gap: 0.8em;
-  --radius: 0.7em;
-  --shadow: 0 0.3em 0.6em var(--primary-a02);
-
   --font-family: "Cairo", sans-serif, 'Inter', system-ui, -apple-system, sans-serif;
   
-  font-size: 16px;
   color-scheme: light;
 }
 .dark, [data-theme="dark"] {
@@ -114,7 +107,6 @@
   //   --span: hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l / 1.5));
     
   //   --card-bg: hsl(from var(--bg) h s calc(l - 5%));
-  //   --shadow: 0 0.3em 0.6em hsl(from var(--text) h s l / 0.2);
     
   //   --primary: hsl(var(--primary-hsl, 160, 80%, 40%));
   // }
@@ -133,15 +125,15 @@
   details {
     width: 100%;
     max-width: 40em;
-    border-radius: 1em;
-    box-shadow: var(--shadow);
     overflow: hidden;
+    @extend .radius-4;
+    box-shadow: var(--shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   details:hover {
     transform: translateY(-0.2em);
-    box-shadow: 0 0.5em 1em var(--primary-a04);
+    box-shadow: 0 0.5em 1em var(--primary-a400);
   }
 
   summary {

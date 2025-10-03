@@ -4,13 +4,14 @@
 // * @lastUpdatedAt:[{ "date": "2025-09-24", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
 // *
 @use 'sass:math';
+@use 'sass:string';
 
 // #region : متغيرات عامة Var-CSS3
 :root {
   //  PRIMARY BASE
-  --ltr: 1;    // للتحكم في القيم التي سيتم عكسها في الوضع العربي
-  --shadow: 1; // للتعامل مع لون الشادو, في حالة if(--shadow: 1) true else (--shadow: 0) fales && $stat: 'prod'
-  --radius: 1; // للتعامل مع الإنحنائات بحواف العنصر, في حالة if(--radius: 1) true else (--radius: 0) fales && $stat: 'prod'
+  --ltr: 1;    // للتحكم في القيم التي سيتم عكسها في الوضع العربي, يجب تغير القيمة إلي -1 عند تغير اللغة و الإتجاخات بالجافا اسكريبت
+  --shadow: 1; // للتعامل مع لون الشادو, في حالة if(--shadow: 1) true else (--shadow: 0) fales && $mode: 'Production'
+  --radius: 1; // للتعامل مع الإنحنائات بحواف العنصر, في حالة if(--radius: 1) true else (--radius: 0) fales && $mode: 'Production'
 
   --h: 160; --s: 80%; --l: 40%; // قيم اللون الرئيسي (primary-hsl)
   --flip-l: 0%;  --ISD: -1; // تساعد في عكس قيمة (الاسود و الابيض) في الوضع الداكن
@@ -50,38 +51,41 @@
   /* // the Colors Used in the App: */
   --card-bg: hsl(from var(--bg) h s calc(l - 5%));
   --br: hsl(from var(--bg) h 10% 50%);
-  --primary-a02: hsl(from var(--primary) h s l / 0.2);
-  --primary-a04: hsl(from var(--primary) h s l / 0.4);
-  
+
   /* // Other Design Variables: */
-  --gap: 0.8em;
-  --radius: 0.7em;
-  --shadow: 0 0.3em 0.6em var(--primary-a02);
+  --shadow-g: 0 0.2em 0.5em hsl(from var(--primary) h s l / 0.2);
   
   /* Font */
+  /*
+    لا تنسى استيراد الخط
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet" />
+  */
   --font-family: "Cairo", sans-serif, 'Inter', system-ui, -apple-system, sans-serif;
-
-  font-size: 16px;
-  color-scheme: light;
+  /* color-scheme: light; */
 }
-
+[dir="rtl"] { --ltr: -1; }
 .dark, [data-theme="dark"] {
   --h: 110;
   --h: 210;
   --flip-l: 100%; --ISD: 1; // تساعد في عكس قيمة (الاسود و الابيض) في الوضع الداكن
 }
-
-:root{  
-  @for $i from 1 through 9 { --primary-a#{$i}00: hsl(from var(--primary) h s l / #{100% - ( $i * 10% )}); }
-  @for $i from 1 through 9 { --primary-l#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--white)); }
-  @for $i from 1 through 9 { --primary-d#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--black)); }
-}
 //#endregion
 
 // SCSS:=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-// #region : الدوال FUN
+// #region : G-FUN -> Global Functions : الدوال العامة و تشترك مع المتغيرات
 
+  /// @function: Global --> mode ...
+  /// @DISC: دالة ترجع قيمة بناء على وضع المود (Development | Production)
+  /// @return 'Development' | 'Production'
+  /// @return $returnDevelopment | $returnProduction
+  /// مثال: background: mode($returnDevelopment: none, $returnProduction: $shadow);
+  @function mode($returnDevelopment: none, $returnProduction: none) { @return if($mode == 'Development', $returnDevelopment, $returnProduction);}
+
+  /// @function: Global --> dir ...
+  /// @DISC: دالة تعكس الزاوية إذا كانت RTL
+  @function dir($num) {  @return mode(if( var(--ltr, 1) == 1 , $num, -$num ), calc( $num * var(--ltr, 1) )); }
+  
   // #region : em|rem|px : التحكم بالوحدات
     /// @FUNC: Global --> em to replace px to em ...
     /// @DISC: دالة لتحويل px إلى em
@@ -94,7 +98,88 @@
     @function em_($percent, $base-font-size: 16) { @return math.div($percent, 100) * $base-font-size * 1rem; }
   // #endregion
 
-  // دالة للحصول على اللون (CSS Var أو fallback)
-  @function varColor($name, $fallback) { @return if( $stat == 'dev' , $fallback, hsl(from hsl(unquote(var(--#{$name}-hsl))) h s l / 1)); }
+  // #region : Color : التحكم بالالوان
+
+    // دالة لتغميق اللون
+    @function darken-color($color, $amount) { @return color-mix(in srgb, $color $amount, black); } // darken-color
+    @function Darken($color, $amount) { @return darken-color($color, $amount); }
+    // دالة لتفتيح اللون
+    // @function lighten-color($color, $amount) { @return mix($white, $color, $amount); } // lighten-color
+    @function lighten-color($color, $amount) { @return color-mix(in srgb, $color $amount, white); } // lighten-color
+    @function Lighten($color, $amount) { @return lighten-color($color, $amount); }
+
+    /// @function: Global --> ShadowColor ...
+    /// @DISC: دالة للتعامل مع لون الشادو, في حالة var(--shadow) == 1 ترجع اللون كما هو و في حالة غير ذالك يتم إرجاع الدرجة الشفافة للإيحاء بعدم وجود شادو
+    @function ShadowColor($color) { @return mode($color, color-mix(in srgb, $color calc(var(--shadow, 1) * 100%), transparent)); }
+
+    // دالة للحصول على اللون (CSS Var أو fallback)
+    @function varColor($name, $fallback) { @return mode($fallback, hsl(from hsl(string.unquote(var(--#{$name}-hsl))) h s l / 1)); }
+    
+  // #endregion
 
 //#endregion
+
+// #region : G-VAR-SCSS -> Global Variables : المتغيرات العامة و تشترك مع الدوال
+
+  /// @VAR: Global --> $mode ...
+  /// @DISC: متغير لتحديد وضع التطوير أو الإنتاج, في وضع التطوير يتم تعطيل بعض الخصائص مثل الشادو و الإنحنائات و غيرها لتسهيل
+  $mode: 'Production'; // 'Development' | 'Production'
+
+  $radiusStatic: 1; // 1 | 0 : حالة الإنحنائات بالموقع حسب var(--radius) == 1 | 0
+
+  // #region : Colors : التحكم بالالوان
+    $primary-hsl: (160, 80%, 40%); // قيم اللون الرئيسي (primary-hsl)
+
+    /* EXTENDED PALETTE */
+    $primary: varColor("primary", hsl(160, 80%, 20%));
+    $secondary: varColor("secondary", hsl(330, 80%, 40%));
+    $accent: varColor("accent", hsl(330, 80%, 40%));
+    $muted: varColor("muted", hsl(250, 80%, 40%));
+
+    $success: varColor("success", hsl(130, 80%, 40%));
+    $danger: varColor("danger", hsl(5, 80%, 40%));
+    $warning: varColor("warning", hsl(60, 80%, 40%));
+    $info: varColor("info", hsl(200, 80%, 40%));
+    $light: varColor("light", hsl(160, 80%, 95%));
+    $dark: varColor("dark", hsl(160, 80%, 5%));
+    // الوان ثابتة لا يتم عكسها مع المود الليلي
+    $gray: varColor("gray", hsl(160, 10%, 50%));
+    $white: varColor("white", hsl(160, 0%, 95%));
+    $black: varColor("black", hsl(160, 0%, 5%));
+    // ------------------------------------------ 
+
+    // المتغيرات المفضل استخدامها في الالوان
+    // الوان رئيسية
+    $bg: $light;
+    $title: hsl(160, 80%,  (5% * 1.5));
+    $text: $dark;
+    $span: hsl(160, 80%, math.div(5% , 1.5));
+    
+    $ok: $success;
+    $err: $danger;
+    $warn: $warning;
+    $inf: $info;
+    // الوان ثانوية مشتقة من الالوان الرئيسية
+    $card-bg:  varColor("card-bg", hsl(160, 80%, (5% - 5%)));
+    $br: varColor("br", hsl(160, 10%, 50%));
+    $primary-a100: varColor("primary-a100", hsla(160, 80%, 20%, 0.1));
+    $primary-a200: varColor("primary-a200", hsla(160, 80%, 20%, 0.2));
+    $primary-a300: varColor("primary-a300", hsla(160, 80%, 20%, 0.3));
+    $primary-a400: varColor("primary-a400", hsla(160, 80%, 20%, 0.4));
+  // #endregion
+
+
+  $shadow-a200: mode( none, 0 0.2em 0.5em ShadowColor($primary-a200) ); // للتعامل مع لون الشادو, في حالة if($mode == 'Development') true else fales && var(--shadow) == 0
+
+  $font-family: var(--font-family);
+// #endregion
+
+
+:root{  
+ /* a */
+ @for $i from 1 through 9 { --primary-a#{$i}00: hsl(from var(--primary) h s l / #{100% - ( $i * 10% )}); }
+ /* l */
+ @for $i from 1 through 9 { --primary-l#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--white)); }
+ /* d */
+  @for $i from 1 through 9 { --primary-d#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--black)); }
+}

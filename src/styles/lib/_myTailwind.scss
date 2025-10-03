@@ -1,63 +1,14 @@
 
-/**
- * 📁 src/styles/lab/_myTailwind.scss
- * @description: [ ]TODO: هذا الملف يحتوي على إعدادات Tailwind المخصصة, يتم استخدامه لتسهيل تطوير الواجهة, يجب حذفه قبل رفع المشروع و تسليمة, لا ينصح به في المشاريع كبيرة الحجم.
- * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
- */
-
+// *
+// * 📁 src/styles/lab/_myTailwind.scss
+// * @description: [ ]TODO: هذا الملف يحتوي على إعدادات Tailwind المخصصة, يتم استخدامه لتسهيل تطوير الواجهة, يجب حذفه قبل رفع المشروع و تسليمة, لا ينصح به في المشاريع كبيرة الحجم.
+// * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
+// *
+@use '../utils' as u;                 // الأدوات المساعدة أولاً
 @use 'sass:math';
 
-// #region : متغيرات SCSS
-/**
- * 📁 src/styles/utils/_var.scss
- * @description: متغيرات الألوان، المسافات، و نقاط التوقف.
- * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
- */
+// #region : Utils : الأدوات المساعدة
 
-
-// :root{
-// --gap: 1rem; // المسافة الافتراضية بين العناصر
-// }
-
-// --------------------------------------------------------
-// الألوان (Colors)
-// يتم تعريفها هنا لتسهيل التعديل عليها لاحقًا
-// --------------------------------------------------------
-$primary: hsl(210, 80%, 40%);
-$secondary: hsl(300, 80%, 40%);
-$accent: hsl(270, 80%, 40%);
-$muted: hsl(350, 80%, 40%);
-
-$success: hsl(140, 80%, 40%);
-$danger: hsl(0, 80%, 40%);
-$warning: hsl(39, 80%, 40%);
-$info: hsl(210, 80%, 40%);
-$light: hsl(210, 80%, 95%);
-$dark: hsl(210, 80%, 5%);
-// الوان ثابتة لا يتم عكسها مع المود الليلي
-$gray: hsl(210, 10%, 50%);
-$white: hsl(210, 0%, 95%);
-$black: hsl(210, 0%, 5%);
-
-// --------------------------------------------------------
-// المسافات (Spacing)
-// تستخدم لإنشاء الهوامش الداخلية والخارجية (padding, margin)
-// --------------------------------------------------------
-$spacing: (
-  0: 0,
-  1: 0.25rem,    // 4px
-  2: 0.5rem,     // 8px
-  3: 0.75rem,    // 12px
-  4: 1rem,       // 16px
-  5: 1.5rem,     // 24px
-  6: 2rem,       // 32px
-  7: 2.5rem,     // 40px
-  8: 3rem,       // 48px
-  9: 3.5rem,     // 56px
-  10: 4rem,      // 64px
-  11: 4.5rem,    // 72px
-  12: 5rem       // 80px
-) !default;
 
 // --------------------------------------------------------
 // نقاط التوقف (Breakpoints)
@@ -73,12 +24,6 @@ $mb-xxl: 1536px;      //  Extra Large
 // #endregion
 
 // #region : العمليات SCSS
-/**
- * 📁 src/styles/utils/_mixin.scss
- * @description: خلطات SCSS لتسهيل كتابة الأنماط المعقدة و المتكررة.
- * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف الخلطات" } ]
- */
-// @import '_var.scss';
 
 // --------------------------------------------------------
 // خلطة flexbox
@@ -134,13 +79,6 @@ $mb-xxl: 1536px;      //  Extra Large
 // #endregion
 
 // #region : كلسات عامة SCSS
-/**
- * 📁 src/styles/utils/_globalClass.scss
- * @description: كلاسات SCSS عامة تشبه فكرة 'tailwind' لتسريع التطوير.
- * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء مكتبة الكلاسات العامة" } ]
- */
-// @import '_var.scss';
-// @import '_mixin.scss';
 
 // --------------------------------------------------------
 // كلاسات Flexbox
@@ -188,6 +126,19 @@ $mb-xxl: 1536px;      //  Extra Large
 // === كلاسات الهيكل (Layout) ===
 // كلاسات المسافات (Margin و Padding)
 @for $i from 1 through 24 {
+  // 0: 0,          // 0px
+  // 1: 0.25rem,    // 4px
+  // 2: 0.5rem,     // 8px
+  // 3: 0.75rem,    // 12px
+  // 4: 1rem,       // 16px
+  // 5: 1.5rem,     // 24px
+  // 6: 2rem,       // 32px
+  // 7: 2.5rem,     // 40px
+  // 8: 3rem,       // 48px
+  // 9: 3.5rem,     // 56px
+  // 10: 4rem,      // 64px
+  // 11: 4.5rem,    // 72px
+  // 12: 5rem       // 80px
   
   // كلاسات الهامش الفردي
   .m-#{$i} { margin: #{$i * 0.25}rem; }
@@ -238,17 +189,17 @@ $mb-xxl: 1536px;      //  Extra Large
 .h-66 { height: 66.666%; }
 
 // === كلاسات الخلفية (Background Colors) ===
-.bg-primary { background: $primary; }
-.bg-secondary { background: $secondary; }
-.bg-success { background: $success; }
-.bg-danger { background: $danger; }
-.bg-warning { background: $warning; }
-.bg-info { background: $info; }
-.bg-dark { background: $dark; }
-.bg-light { background: $light; }
-.bg-gray { background: $gray; }
-.bg-white { background: $white; }
-.bg-black { background: $black; }
+.bg-primary { background: u.$primary; }
+.bg-secondary { background: u.$secondary; }
+.bg-success { background: u.$success; }
+.bg-danger { background: u.$danger; }
+.bg-warning { background: u.$warning; }
+.bg-info { background: u.$info; }
+.bg-dark { background: u.$dark; }
+.bg-light { background: u.$light; }
+.bg-gray { background: u.$gray; }
+.bg-white { background: u.$white; }
+.bg-black { background: u.$black; }
 .bg-r { background: hsla(0, 100%, 50%, 80%); }
 .bg-b { background: hsla(240, 100%, 50%, 80%); }
 .bg-g { background: hsla(120, 100%, 50%, 80%); }
@@ -259,17 +210,17 @@ $mb-xxl: 1536px;      //  Extra Large
 .br-y { border: 0.6125em solid hsla(60, 100%, 50%, 80%); }
 
 // === كلاسات النص (Text Utilities) ===
-.text-primary { color: $primary; }
-.text-secondary { color: $secondary; }
-.text-success { color: $success; }
-.text-danger { color: $danger; }
-.text-warning { color: $warning; }
-.text-info { color: $info; }
-.text-dark { color: $dark; }
-.text-light { color: $light; }
-.text-gray { color: $gray; }
-.text-white { color: $white; }
-.text-black { color: $black; }
+.text-primary { color: u.$primary; }
+.text-secondary { color: u.$secondary; }
+.text-success { color: u.$success; }
+.text-danger { color: u.$danger; }
+.text-warning { color: u.$warning; }
+.text-info { color: u.$info; }
+.text-dark { color: u.$dark; }
+.text-light { color: u.$light; }
+.text-gray { color: u.$gray; }
+.text-white { color: u.$white; }
+.text-black { color: u.$black; }
 
 // كلاسات محاذاة النص
 .text-center { text-align: center; }
@@ -282,4 +233,19 @@ $mb-xxl: 1536px;      //  Extra Large
 .text-lg { font-size: 1.125rem; }  // 18px
 .text-xl { font-size: 1.25rem; }   // 20px
 .text-2xl { font-size: 1.5rem; }   // 24px
+
+
+// كلاسات الإنحنائات (Border Radius)
+/// @description: كلاسات لإنشاء إنحنائات بحواف العناصر, تستخدم المتغير --radius لتحديد قيمة الإنحناء.
+/// @usage: إضافة الكلاس br-{1-24} للعناصر لتطبيق الإنحناء.
+/// @example: .radius-1 { border-radius: u.mode( if(u.$radiusStatic == 1, 0.325em, 0), calc( 0.325em * var(--radius) ) ); }
+/// @note: في حالة كان المتغير --radius غير معرف أو يساوي 1 يتم تطبيق الإنحناء, في حالة كان يساوي 0 لا يتم تطبيق الإنحناء.
+@for $i from 1 through 24 {
+  .radius-#{$i} { border-radius: u.mode( if(u.$radiusStatic == 1, $i * 0.325em, 0), calc( #{$i * 0.325em} * var(--radius) ) ); }
+}
+.radius-full,
+.radius-100{ border-radius: u.mode( if(u.$radiusStatic == 1, 100%, 0), calc( 100% * var(--radius) ) ); }
+.radius-50{ border-radius: u.mode( if(u.$radiusStatic == 1, 100%, 0), calc( 100% * var(--radius) ) ); }
+
+
 // #endregion

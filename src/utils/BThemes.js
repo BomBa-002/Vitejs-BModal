@@ -30,7 +30,7 @@ const useThemeSystemOrDarkOrLight = () =>{
       height: 2.5em;
       font-size: 80%;
 
-      box-shadow: 0 0.2em 0.5em var(--primary-a02);
+      box-shadow: 0 0.2em 0.5em var(--primary-a200);
       cursor: pointer;
       user-select: none;
       color: var(--text);
@@ -47,12 +47,12 @@ const useThemeSystemOrDarkOrLight = () =>{
     btn.addEventListener("mouseenter", () => {
       btn.style.opacity = "1";
       btn.style.transform = "scale(1.1)";
-      btn.style.boxShadow = "0 0.3em 0.7em var(--primary-a04)";
+      btn.style.boxShadow = "0 0.3em 0.7em var(--primary-a400)";
     });
     btn.addEventListener("mouseleave", () => {
       btn.style.opacity = "0.6";
       btn.style.transform = "scale(1)";
-      btn.style.boxShadow = "0 0.2em 0.5em var(--primary-a02)";
+      btn.style.boxShadow = "0 0.2em 0.5em var(--primary-a200)";
     });
     // click effect
     const DCL = document.documentElement.classList;

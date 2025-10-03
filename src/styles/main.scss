@@ -4,7 +4,7 @@
 // * @lastUpdatedAt:[{ "date": "2025-09-24", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
 // * 
 
-@use './utils' as *;                 // الأدوات المساعدة أولاً
+@use './utils' as u;                 // الأدوات المساعدة أولاً
 @use './lib/normalize' as *;         // الأنماط الأساسية و المكانب الخارجية
 @use './lib/myTailwind' as *;        // مكتبة من صناعتي الخاصة لأنماط شبيهة بمكتبة التايلويند
 // @use './lib/base' as *;              // الأنماط الأساسية و المكانب الخارجية
@@ -16,80 +16,93 @@
 
 //#region /* Main Styles */
 
-// :root{--h:160;--s:80%;--l:40%;--pl:20%;--flip-l:0%;--ISD:-1;--ltr:1;--primary-hsl:var(--h) var(--s) var(--pl);--secondary-hsl:330 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--accent-hsl:270 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--success-hsl:134 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--danger-hsl:6 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--warning-hsl:60 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--info-hsl:197 var(--s) calc((var(--flip-l) - var(--l) * var(--ISD) ));--light-hsl:var(--h) 10% calc((var(--flip-l) - 96% * var(--ISD) ));--dark-hsl:var(--h) 20% calc((var(--flip-l) - 10% * var(--ISD) ));--muted-hsl:var(--h) 10% 50%;--white-hsl:var(--h) 0% 100%;--black-hsl:var(--h) 0% 0%;--bg:hsl(var(--light-hsl, 0, 0%, 100%));--title:hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l * 1.5));--text:hsl(var(--dark-hsl, 0, 0%, 0%));--span:hsl(from hsl(var(--dark-hsl, 0, 0%, 0%)) h s calc(l / 1.5));--primary:hsl(var(--primary-hsl, 160, 80%, 40%));--secondary:hsl(var(--secondary-hsl, 330, 80%, 100%));--accent:hsl(var(--accent-hsl, 270, 80%, 100%));--muted:hsl(var(--muted-hsl, 210, 8%, 48%));--ok:hsl(var(--success-hsl, 130, 80%, 100%));--err:hsl(var(--danger-hsl, 0, 80%, 100%));--warn:hsl(var(--warning-hsl, 40, 80%, 100%));--inf:hsl(var(--info-hsl, 200, 80%, 100%));--card-bg:hsl(from var(--bg) h s calc(l - 5%));--br:hsl(from var(--bg) h 10% 50%);--primary-a02:hsl(from var(--primary) h s l / 0.2);--primary-a04:hsl(from var(--primary) h s l / 0.4);--gap:0.8em;--radius:0.7em;--shadow:0 0.3em 0.6em var(--primary-a02);--font-family:"Cairo",sans-serif,'Inter',system-ui,-apple-system,sans-serif;font-size:16px;color-scheme:light}[dir=rtl] :root{--ltr:-1}.dark,[data-theme=dark]{--h:110;--pl:60%;--flip-l:100%;--ISD:1}
 
 // Bast Normalize:
   *{margin: 0; padding: 0; box-sizing:border-box}
   i { font-style: normal; }
 
+  body, main.main-master {  
+    @extend .flex-col;
+  }
   body{
-    width: 100%;
-    min-height: 100dvh;
+    min-height: 100vh;
 
-    font-family: Inter, system-ui, "Segoe UI", Roboto, "Noto Sans", Arial;
-    /*
-    background: linear-gradient(180deg, var(--bg), #fff);
-    color: hsl(210 10% 12%);
-    */
-    background: var(--bg);
-    color: var(--text);
+    font-family: u.$font-family;
+    background: u.$bg;
+    color: u.$text;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
 
-    overflow: hidden;
+    // flex-col:
+    justify-content: center;
+    align-items: flex-start;
+
+
+    // overflow: hidden;
+    overflow: scroll;
+
+
+
+  //   @include u.scrollbar(
+  //       $width: 0.5em,
+  //       $thumb-color: var(--primary),
+  //       $thumb-hover-color: var(--bg),
+  //       $radius: 0.5em
+  //     );
+  //     &:hover, &:focus-within { 
+  //       // padding-inline-start: 0.5em;
+  //       overflow: auto; }
   }
 
 
-  
+
   header.header-master {
     & {
-      padding: em(8);
+      padding: u.em(8);
       width: 100%;
-      box-shadow: var(--shadow);
+      box-shadow: u.$shadow-a200;
 
-      display: flex;
+      @extend .flex;
     }
 
     .logo{
       font-size: 120%;
-      margin-inline-end: em(4);
+      margin-inline-end: u.em(4);
     }
     sub{
       font-size: 50%;
-      color: var(--secondary);
+      color: u.$secondary;
       display: inline-block;
-      transform: translateX(-50%);
+      transform: translateX(u.dir(-50%));
     }
     
   }
 
   main.main-master{
-    padding: 0.2em;
+    padding: u.em(4);
     width: 100%;
-    max-height: 100dvh;
+    // max-height: 100dvh;
     flex: 1;
+    height: 10000px;
 
-    display: flex;
-    // justify-content: center;
+    // flex-col:
     align-items: flex-start;
-    flex-direction: column;
-    // gap: 1.5em;
 
-    // background: red;
+
+    @extend .br-r;
     
-    
-    & { 
-      overflow: hidden;
-      @include scrollbar(
-        $width: 0.5em,
-        $thumb-color: var(--primary),
-        $thumb-hover-color: var(--bg),
-        $radius: 0.5em
-      );
-      &:hover, &:focus-within { 
-        // padding-inline-start: 0.5em;
-        overflow: auto; }
-    }
+    // & { 
+    //   // overflow: hidden;
+    //   @include u.scrollbar(
+    //     $width: 0.5em,
+    //     $thumb-color: var(--primary),
+    //     $thumb-hover-color: var(--bg),
+    //     $radius: 0.5em
+    //   );
+    //   &:hover, &:focus-within { 
+    //     // padding-inline-start: 0.5em;
+    //     overflow: auto; }
+    // }
 
   }
 
@@ -111,21 +124,10 @@
   //   --primary: hsl(var(--primary-hsl, 160, 80%, 40%));
   // }
 
-  body {
-    font-family: system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1.5em;
-  }
-
   details {
     width: 100%;
     // max-width: 40em;
-    border-radius: 0.6em;
+    @extend .radius-2;
     box-shadow: var(--shadow);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -133,7 +135,7 @@
 
   details:hover {
     transform: translateY(-0.2em);
-    box-shadow: 0 0.5em 1em var(--primary-a04);
+    box-shadow: 0 0.5em 1em var(--primary-a400);
   }
   
   summary {
@@ -219,7 +221,7 @@
 
   .details {
     &-2{
-      box-shadow: 0 0em 1em var(--primary-a04);
+      box-shadow: 0 0em 1em var(--primary-a400);
       
         summary {
           cursor: pointer;
@@ -266,7 +268,6 @@
 .bm-modal {
   background: var(--bm-bg);
   border: 0.1em solid var(--bm-border);
-  // border-radius: var(--bm-radius);
   box-shadow: var(--bm-shadow);
   display: flex;
   flex-direction: column;
@@ -305,9 +306,9 @@
 .bm-btn {
   width: 1em;
   height: 1em;
-  border-radius: 50%;
   border: none;
   cursor: pointer;
+  @extend .radius-50;
   transition: transform 0.2s;
 }
 .bm-btn:hover { transform: scale(1.2); }
@@ -356,7 +357,6 @@
 .bm-modal {
   background: #fff;
   border: 0.1em solid #ccc;
-  border-radius: 0.3em; // 0.6em
   box-shadow: 0 0.6em 1.2em rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
@@ -364,6 +364,7 @@
   opacity: 0;
   transition: all 0.3s ease;
   position: relative;
+  @extend .radius-1;
 }
 .bm-show .bm-modal { transform: scale(1); opacity: 1; }
 
@@ -382,8 +383,9 @@
 .bm-controls { display: flex; gap: 0.4em; }
 .bm-btn {
   width: 1em; height: 1em;
-  border-radius: 50%; border: none;
+  border: none;
   cursor: pointer;
+  @extend .radius-50;
 }
 .bm-close { background: hsl(0,70%,50%); }
 .bm-max { background: hsl(120,60%,40%); }
@@ -467,9 +469,9 @@ $btn-text: var(--btn-text);
       background: $btn-bg;
       color: $btn-text;
       border: none;
-      border-radius: 0.5em;
       cursor: pointer;
       transition: background 0.3s ease;
+      @extend .radius-2;
 
       &:hover {
         background: $btn-bg-hover;
@@ -489,18 +491,18 @@ $btn-text: var(--btn-text);
 
   .card {
     background-color: $light;
-    border-radius: 0.5em;
     padding: 0.5em;
-    box-shadow: 0 0.25em 0.5em var(--primary-a02);
+    box-shadow: 0 0.25em 0.5em var(--primary-a200);
     text-align: start;
+    @extend .radius-1;
 
     .color-box {
       background-color: var(--color);
       width: 100%;
       height: 5em;
-      border-radius: 0.5em;
       margin-bottom: 1em;
       border: 0.1em solid $dark;
+      @extend .radius-1;
     }
 
     h2 {
@@ -520,14 +522,13 @@ $btn-text: var(--btn-text);
 // ------------------------------------------------
 .card {
   background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: 0 0 1em var(--primary-a04);
+  box-shadow: 0 0 1em var(--primary-a400);
   padding: 1em;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+  @extend .radius-2;
   &:hover {
     transform: translateY(-0.2em);
-    box-shadow: 0 0.5em 1em var(--primary-a04);
+    box-shadow: 0 0.5em 1em var(--primary-a400);
   }
 }
 
