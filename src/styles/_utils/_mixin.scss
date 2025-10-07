@@ -1,0 +1,268 @@
+// 
+// * 📁 src/styles/utils/_mixin.scss
+// * @description: ملف المعادلات و الدوال المنطقية.
+// * @lastUpdatedAt:[{ "date": "2024-09-10", "by": ["BomBa"], "comment": "كتابة الكود الأساسي للملف." }]
+// 
+@use 'sass:map';
+@use 'sass:list';
+@use "sass:meta";
+@use "sass:string";
+
+// @use './GFun' as *;
+@use './var' as *;
+
+
+/// How to use mixin:-   @include mixin;
+
+// #region { flex - Radius - Color }
+
+/// @MIXIN: Global --> flex to flexBox ...
+/// @DISC: هذة الدالة تساعد علي إستخدام خاصية - flexBox - بشكل جيد وسليم.
+@mixin flex($direction: row,$wrap: nowrap, $justify-content: space-between, $align-items: center, $align-content: center) {
+  // display: flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: $direction;
+  flex-direction: $direction;
+  -ms-flex-wrap: $wrap;
+  flex-wrap: $wrap;
+  -webkit-box-pack: $justify-content;
+  -ms-flex-pack: $justify-content;
+  justify-content: $justify-content;
+  -webkit-box-align: $align-items;
+  -ms-flex-align: $align-items;
+  align-items: $align-items;
+  -ms-flex-line-pack: $align-content;
+  align-content: $align-content;
+  @content;
+}
+
+
+/// @MIXIN: Global --> Color
+/// @DISC: ✅ Mixin: Color مع البادئات والشرط
+/// @EX:
+///         .element {
+///           @EX-1  @include Color(#000);
+///           @EX-2  @include Color(#000, #fff);
+///         }
+@mixin Color($color: null, $bg: null) {
+  @if ($color != null) { color: $color; fill: $color; }
+  @if ($bg != null) { background: $bg; }
+}
+
+
+/// @MIXIN: Global --> Radius
+/// @DISC: ✅ Mixin: Radius مع البادئات والشرط
+/// @EX:
+///         .element {
+///           @EX-1  --radius: 1; @include Radius(0.5em);
+///           @EX-2  --radius: 1; @include Radius(0.5em 1em 0 1em);
+///           @EX-3  --radius: 0; @include Radius(0.5em); // ❌ لن يُطبق
+///         }
+@mixin Radius($radius...) {
+@if list.length($radius) == 0 {
+  @error "يجب تمرير قيمة واحدة على الأقل لميكسين Radius";
+}
+
+@if $mode == 'development' {
+  @include Prefix(border-radius, $radius);
+}
+@else {
+  $result: ();
+  
+  @each $value in $radius {
+    // تحقق إذا كانت القيمة تحتوي على مسافة (قيم متعددة)
+    @if meta.type-of($value) == 'string' and string.index($value, ' ') {
+      $result: list.append($result, $value);
+    }
+    @else {
+      $result: list.append($result, calc(var(--radius, 1) * #{$value}));
+    }
+  }
+  
+  @include Prefix(border-radius, if(list.length($result) > 1, $result, list.nth($result, 1)));
+}
+}
+
+//#endregion
+
+// #region { Prefix - Shadow - Transition - Animation|KeyFrame - Overlay }
+  
+/// @MIXIN: Global --> Prefix ...
+/// @DISC: إضافة بادئات لبعض الخصائص التي قد لا تكون مدعومة بشكل موحد في جميع المتصفحات.
+/// @      -webkit-: يستخدم لمتصفح [Chrome, Safari, iOS], -moz-: يستخدم لمتصفح [Firefox], -o-: يستخدم لمتصفح [Opera], -ms-: يستخدم لمتصفح [Internet Explorer, Edge].
+/// @      هناك جدول تم إنشائه في أخر صفحة - css-L.ts - يمكنك الإطلاع ومراجعته 
+@mixin Prefix($property, $value, $prefixes: (webkit, moz, o, ms)) {
+  @if $mode == 'development' { $prefixes: () }
+  @each $prefix in $prefixes {-#{$prefix}-#{$property}: $value;}#{$property}: $value;
+}
+
+/// @MIXIN: Global --> Shadow ...
+/// @DISC: ✅ Mixin: Shadow مع البادئات والشرط
+/// @EX:
+///         .element {
+///           @EX-1  --shadow: 1; @include Shadow(0 0 1em hsla(0, 0%, 0%, 0.25));
+///           @EX-2  --shadow: 1; @include Shadow( 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1) );
+///           @EX-3  --shadow: 0; @include Shadow(0 0 1em hsla(0, 0%, 0%, 0.25)); // ❌ لن يُطبق
+///         }
+@mixin Shadow($shadows...) {
+  $shadowValue: null;
+  // إذا كان هناك أكثر من قيمة شادو
+  @if list.length($shadows) > 1 { $shadowValue: join($shadows, ', '); }
+  @else { $shadowValue: list.nth($shadows, 1); }
+  @include Prefix(box-shadow, $shadowValue);
+}
+@mixin DropShadow($shadows...) {
+  $shadowValue: null;
+  // إذا كان هناك أكثر من قيمة شادو
+  @if length($shadows) > 1 { $shadowValue: join($shadows, ', '); }
+  @else { $shadowValue: nth($shadows, 1); }
+  @include Prefix(filter, drop-shadow($shadowValue));
+}
+@mixin TextShadow($shadows...) {
+  $shadowValue: null;
+  // إذا كان هناك أكثر من قيمة شادو
+  @if list.length($shadows) > 1 { $shadowValue: join($shadows, ', '); }
+  @else { $shadowValue: list.nth($shadows, 1); }
+  @include Prefix(text-shadow, $shadowValue);
+}
+
+
+
+
+
+/// @MIXIN: Global --> Transition ...
+/// @DISC: تبسيط إضافة الخصائص المتكررة مثل transition في ملفات CSS الخاصة بك. الميكسين يسمح لك بكتابة كود CSS مرة واحدة، ثم إعادة استخدامه في أي مكان تحتاج فيه إلى نفس التأثير.
+/// @DISC:  📦 مكسن Transition متقدم مع دعم Prefix تلقائي
+/// يدعم:
+///       - خاصية واحدة كنص
+///       - خاصية واحدة كمصفوفة (مع مدة وزمن وتأخير)
+///       - عدة خصائص كمصفوفات
+/// @EX: ✅ أمثلة:
+///     @include Transition(opacity);
+///     @include Transition((opacity, 0.4s, ease-in));
+///     @include Transition((opacity, 0.4s), (transform, 0.3s, ease-in-out));
+///
+/// يتم تلقائيًا إضافة: -webkit-, -moz-, -o- إلى الخاصية.
+@mixin Transition($transitions...) {
+  $result: ();
+
+  @each $item in $transitions {
+    @if meta.type-of($item) == 'list' {
+      $len: list.length($item);
+
+      $property: list.nth($item, 1);
+      $duration: if($len >= 2, list.nth($item, 2), 0.3s);
+      $easing: if($len >= 3, list.nth($item, 3), ease);
+      $delay: if($len >= 4, list.nth($item, 4), 0s);
+
+      $transition: #{$property} #{$duration} #{$easing} #{$delay};
+      $result: list.append($result, $transition, comma);
+    } @else {
+      $result: list.append($result, #{$item} 0.3s ease 0s, comma);
+    }
+  }
+
+  // إنشاء النسخة مع البادئات
+  @include Prefix(transition, $result);
+}
+
+
+
+
+
+/// @MIXIN: Global --> KeyFrame to Animation ...
+/// @DISC: هذة الدالة تساعد علي إستخدام خاصية - keyframes - بشكل جيد وسليم.
+@mixin KeyFrame($animationName, $prefixes: (webkit, moz, o, ms)){
+  @each $prefix in $prefixes {#{'@-' + $prefix + '-keyframes'} #{$animationName}{@content;}} @keyframes #{$animationName}{@content;}
+}
+
+/// @MIXIN: Global --> Overlay ...
+/// @DISC: الـ Overlay هو نمط شائع يستخدم في واجهات المستخدم لإضافة طبقة فوق المحتوى الحالي، مثل الشاشات المنبثقة (modals) أو الخلفيات المظللة التي تظهر وراءها.
+@mixin Overlay($bg: hsl(from var(--primary) h s l / 20%), $z-i: 10){
+  position: absolute; //fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;  
+  background-color: $bg;  
+  z-index: $z-index;
+}
+
+//#endregion
+
+//#region { MediaQuery  }
+  // نقاط التوقف (screen_w)breakpoints
+  //* ما ينطبق علي الصغير ينطبق علي الكبير, الصغير أولاً *
+  //* $orientation: null         |--> في جميع الاوضاع *
+  //* $orientation: portrait     |--> الوضع الرأسي-العمودي *
+  //* $orientation: landscape    |--> الوضع الأفقي *
+  //* $CONDITIONS:  ''           |--> يمكن كتابة شرط خاص *
+  $screen_w: (//breakpoints
+    ss : 0,                                         // 
+    xs : #{em(300)},                                   // شاشات الهواتف  الصغيرة جداً جداً(أقل من 300)
+    sm : #{em(576)},                                   // شاشات الهواتف الصغيرة (أقل من 568)
+    md : #{em(768)},                                   // شاشات صغيرة (أقل من 768)
+    lg : #{em(992)},                                   // شاشات متوسطة (992)
+    xl : #{em(1200)},                                  // شاشات كبيرة (أقل من 1200)
+    xxl: #{em(1400)}                                   // شاشات كبيرة جدًا (أقل من 1400)
+  );
+  @mixin media_to($MAX: null, $MIN: null, $O: null, $CON: null, $CON_OR: null) {
+    $maxWidth: if($MAX != null, map.get($screen_w, $MAX), null);
+    $minWidth: if($MIN != null, map.get($screen_w, $MIN), null);
+
+    @if $minWidth     != null { $CON: if($CON != null, $CON + ' and ' + '(min-width: #{$minWidth})', '(min-width: #{$minWidth})'); }
+    @if $maxWidth     != null { $CON: if($CON != null, $CON + ' and ' + '(max-width: #{$maxWidth})', '(max-width: #{$maxWidth})'); }
+    @if $O  != null { $CON: if($CON != null, $CON + ' and ' + '(orientation: #{$O})', '(orientation: #{$O})'); }
+    @if $CON_OR     != null { $CON: if($CON != null, $CON + ', ' + '#{$CON_OR}', '#{$maxWidth}'); }
+    
+    @media #{$CON} {@content;}
+  }  
+//#endregion
+
+//#region { Scrollbar - outlineActive }
+
+  //@ حلقة for لإنشاء فئات br-xx بالقيم المطلوبة
+  // @for $i from 1 through 10 {.br-#{$i} {border-radius: br-radius( $i * 0.1em);}}
+
+  /// @MIXIN: Global --> Scrollbar
+  /// @DISC: دالة مركبة لتحكم في شريط التمرير للعنصر.
+  /// @EX: 
+  ///     html { @include Scrollbar(); }
+  @mixin Scrollbar(
+    $thumb-color: var(--secondary, hsl(330, 80%, 40%)),
+    $thumb-hover: hsl(from $thumb-color h s l / 40%),
+    $track-color: hsl(from $thumb-color h s l / 0%),
+    $width: 0.4rem,
+    $radius: 9999rem
+  ) {
+    /* WebKit (Chrome, Safari, Edge, Opera) */
+    &::-webkit-scrollbar { width: $width; height: $width; }
+    &::-webkit-scrollbar-track { /* margin-top: 100px; */ background: $track-color; border-radius: $radius; }
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, $thumb-color -10%, #0000);
+      border-radius: $radius;
+      @include Transition(background 0.3s ease);
+    }
+    &::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #0000 -90%, $thumb-color); }
+    /* 🦊 Firefox فقط */
+    @-moz-document url-prefix() {
+      & {
+        scrollbar-width: thin;
+        scrollbar-color: #{$thumb-color} #{$track-color};
+      }
+    }
+    
+  }
+
+  /// @MIXIN: Global --> outlineActive to add outline on focus...
+  /// @DISC: دالة مركبة لإضافة إطار علي العنصر المحدد او الذي تيت التركيز عليه.
+  @mixin outlineActive{&:active,&:focus,&:focus-within{outline: calc(em(2) * $OA) solid $warning !important;}}
+
+//#endregion
+
+
+
+

@@ -37,10 +37,10 @@
   --black: hsl(from var(--primary) h 0% 5%);
   // ------------------------------------------
   
-  --ok: var(--success-hsl);
-  --err: var(--danger-hsl);
-  --warn: var(--warning-hsl);
-  --inf: var(--info-hsl);
+  --ok: var(--success);
+  --err: var(--danger);
+  --warn: var(--warning);
+  --inf: var(--info);
 
   --bg: var(--light);
   --title: hsl(from var(--dark) h s calc(l * 1.5));
@@ -54,7 +54,7 @@
 
   /* // Other Design Variables: */
   --shadow-g: 0 0.2em 0.5em hsl(from var(--primary) h s l / 0.2);
-  
+  --size-scrollbar: 0.5em;
   /* Font */
   /*
     لا تنسى استيراد الخط
@@ -113,9 +113,20 @@
     @function ShadowColor($color) { @return mode($color, color-mix(in srgb, $color calc(var(--shadow, 1) * 100%), transparent)); }
 
     // دالة للحصول على اللون (CSS Var أو fallback)
-    @function varColor($name, $fallback) { @return mode($fallback, hsl(from hsl(string.unquote(var(--#{$name}-hsl))) h s l / 1)); }
+    // @function varColor($name, $fallback) { @return mode($fallback, hsl(from hsl(string.unquote(var(--#{$name}-hsl))) h s l / 1)); }
+    @function varColor($name, $fallback) { @return mode($fallback, hsl(from var(--#{$name}) h s l / 1)); }
     
   // #endregion
+
+  // #region : Other : { Radius: 'إرجاع قيمة تتوافق مع الشروط' }
+
+    /// @function: Global --> Radius ...
+    /// @DISC: دالة ترجع قيمة إنحناء الحواف بناء على الشروظ المتفق عليها (mode, isRadius ok)
+    /// @return number
+    /// مثال: border-radius: Radius($n: 0.5em);
+    @function Radius($n: 0){ @return mode( if($radiusStatic == 1, $n, 0), calc( $n * var(--radius) ) ); }
+
+  //#endregion
 
 //#endregion
 
@@ -131,7 +142,7 @@
     $primary-hsl: (160, 80%, 40%); // قيم اللون الرئيسي (primary-hsl)
 
     /* EXTENDED PALETTE */
-    $primary: varColor("primary", hsl(160, 80%, 20%));
+    $primary: varColor("primary", hsl(160, 80%, 40%));
     $secondary: varColor("secondary", hsl(330, 80%, 40%));
     $accent: varColor("accent", hsl(330, 80%, 40%));
     $muted: varColor("muted", hsl(250, 80%, 40%));
@@ -162,24 +173,35 @@
     // الوان ثانوية مشتقة من الالوان الرئيسية
     $card-bg:  varColor("card-bg", hsl(160, 80%, (5% - 5%)));
     $br: varColor("br", hsl(160, 10%, 50%));
-    $primary-a100: varColor("primary-a100", hsla(160, 80%, 20%, 0.1));
-    $primary-a200: varColor("primary-a200", hsla(160, 80%, 20%, 0.2));
-    $primary-a300: varColor("primary-a300", hsla(160, 80%, 20%, 0.3));
-    $primary-a400: varColor("primary-a400", hsla(160, 80%, 20%, 0.4));
+    $primary-a000: varColor("primary-a100", hsla(160, 80%, 40%, 0.0));
+    $primary-a100: varColor("primary-a100", hsla(160, 80%, 40%, 0.1));
+    $primary-a200: varColor("primary-a200", hsla(160, 80%, 40%, 0.2));
+    $primary-a300: varColor("primary-a300", hsla(160, 80%, 40%, 0.3));
+    $primary-a400: varColor("primary-a400", hsla(160, 80%, 40%, 0.4));
+    $primary-a500: varColor("primary-a400", hsla(160, 80%, 40%, 0.5));
+    $primary-a600: varColor("primary-a400", hsla(160, 80%, 40%, 0.6));
+    $primary-a700: varColor("primary-a400", hsla(160, 80%, 40%, 0.7));
+    $primary-a800: varColor("primary-a800", hsla(160, 80%, 40%, 0.8));
+    $primary-a900: varColor("primary-a800", hsla(160, 80%, 40%, 0.9));
   // #endregion
 
 
-  $shadow-a200: mode( none, 0 0.2em 0.5em ShadowColor($primary-a200) ); // للتعامل مع لون الشادو, في حالة if($mode == 'Development') true else fales && var(--shadow) == 0
+  $shadow-a200: mode( none, 0 0 0.5em ShadowColor($primary-a200) ); // للتعامل مع لون الشادو, في حالة if($mode == 'Development') true else fales && var(--shadow) == 0
+  $size-scrollbar: var(--size-scrollbar, em(12));
 
   $font-family: var(--font-family);
 // #endregion
 
-
 :root{  
- /* a */
- @for $i from 1 through 9 { --primary-a#{$i}00: hsl(from var(--primary) h s l / #{100% - ( $i * 10% )}); }
- /* l */
- @for $i from 1 through 9 { --primary-l#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--white)); }
- /* d */
-  @for $i from 1 through 9 { --primary-d#{$i}00: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--black)); }
+  /* a */
+  @for $i from 0 through 9 { --primary-a#{$i * 100}: hsl(from var(--primary) h s l / #{100% - ( $i * 10% )}); }
+  /* l */
+  @for $i from 1 through 9 { --primary-l#{$i * 100}: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--white)); }
+  /* d */
+  @for $i from 1 through 9 { --primary-d#{$i * 100}: color-mix(in srgb, var(--primary) #{100% - ( $i * 10% )}, var(--black)); }
 }
+// 🎨 توليد درجات primary a100 → a900 كمتغيرات SCSS + CSS Variables
+
+
+
+

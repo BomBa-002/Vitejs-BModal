@@ -339,7 +339,7 @@ import { Storage } from "./BHelper.js";
     _restoreState() {
       if (!this.options.storage) return;
       const {data : saved} = Storage.get(`settings.ModaleSetting.${this.id}`, "session");
-      console.log(saved);
+      // console.log(saved);
       if (!saved) return;
       const state = JSON.parse(saved);
 

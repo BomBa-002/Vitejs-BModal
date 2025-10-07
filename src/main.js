@@ -4,12 +4,13 @@
  * lastUpdatedAt:[{ "date": "20/09/2025", "by": ["BomBa"], "comment": "ملف الإدارة الرئيسي" }]
  */
 
-// import "./utils/BQuery.js";
-import { $ } from "./utils/BQuery.js";
+import { sleep } from "./utils/BQuery.js";
+// import { $, $$ } from "./utils/BQuery.js";
 
 import "./store/useStore.js";
 import { useThemeSystemOrDarkOrLight } from "./utils/BThemes.js";
 import { useModal } from "./utils/BModal.js";
+// import { BScrollbars } from "./lib/BScrollbars.js"; // [ ] TODO: edit|deleted
 // ---------- ----------
 import "./styles/main.scss";
 // ---------- ---------- ---------- ---------- ----------
@@ -29,7 +30,32 @@ $( document ).ready(async () => {
   
 
   // console.log($('.main-master'));
-  
+
+  // await sleep(5000);
+  // alert('i love you');
+
+
+
+  // scrollbar:- // [ ] TODO: edit|deleted
+  /*
+    const _elements = $$('.BScrollbars');
+    _elements.each(_e => {
+      new BScrollbars(_e, {
+                size: {
+                    width: 12,
+                    height: 12
+                },
+                position: {
+                    x: 'right',
+                    y: 'bottom'
+                },
+                theme: 'bs-theme-dark',
+                autoHide: 'scroll',
+                autoHideDelay: 1500,
+                dragScroll: true
+            });
+    });
+  */
 });
 
 

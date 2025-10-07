@@ -4,7 +4,7 @@
 // * @description: [ ]TODO: هذا الملف يحتوي على إعدادات Tailwind المخصصة, يتم استخدامه لتسهيل تطوير الواجهة, يجب حذفه قبل رفع المشروع و تسليمة, لا ينصح به في المشاريع كبيرة الحجم.
 // * @lastUpdatedAt: [ { "date": "2025-09-27", "by": ["BomBa"], "comment": "إنشاء ملف المتغيرات" } ]
 // *
-@use '../utils' as u;                 // الأدوات المساعدة أولاً
+@use '../_utils' as u;                 // الأدوات المساعدة أولاً
 @use 'sass:math';
 
 // #region : Utils : الأدوات المساعدة
@@ -240,12 +240,27 @@ $mb-xxl: 1536px;      //  Extra Large
 /// @usage: إضافة الكلاس br-{1-24} للعناصر لتطبيق الإنحناء.
 /// @example: .radius-1 { border-radius: u.mode( if(u.$radiusStatic == 1, 0.325em, 0), calc( 0.325em * var(--radius) ) ); }
 /// @note: في حالة كان المتغير --radius غير معرف أو يساوي 1 يتم تطبيق الإنحناء, في حالة كان يساوي 0 لا يتم تطبيق الإنحناء.
-@for $i from 1 through 24 {
-  .radius-#{$i} { border-radius: u.mode( if(u.$radiusStatic == 1, $i * 0.325em, 0), calc( #{$i * 0.325em} * var(--radius) ) ); }
-}
+@for $i from 1 through 24 { .radius-#{$i} { border-radius: u.Radius(#{$i * 0.325em}); } }
 .radius-full,
 .radius-100{ border-radius: u.mode( if(u.$radiusStatic == 1, 100%, 0), calc( 100% * var(--radius) ) ); }
 .radius-50{ border-radius: u.mode( if(u.$radiusStatic == 1, 100%, 0), calc( 100% * var(--radius) ) ); }
 
 
 // #endregion
+
+
+// كلاسات الإنحنائات (container)
+/// @description: كلاسات مرن، مركزي، يستجيب على نفس نقاط التوقف في Tailwind: sm, md, lg, xl, 2xl) مع دعم الـ padding-inline (لـ LTR/RTL) وخيارات للاستخدام السريع.
+/// @example: <div class="| container">...</div>
+.container {
+  width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+
+  /* fixed max-widths (non-fluid) */
+  @include sm { max-width: $mb-sm; }
+  @include md { max-width: $mb-md; }
+  @include lg { max-width: $mb-lg; }
+  @include xl { max-width: $mb-xl; }
+  @include xxl { max-width: $mb-xxl; }
+}

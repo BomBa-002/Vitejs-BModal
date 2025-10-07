@@ -8,21 +8,19 @@
 
 class Bquery {
   constructor(selector, context = document) {
-    if (!selector) {
-      this.elements = [];
-    } else if (selector instanceof Node) {
-      this.elements = [selector];
-    } else if (selector instanceof NodeList || Array.isArray(selector)) {
-      this.elements = Array.from(selector);
-    } else if (typeof selector === 'string') {
-      this.elements = Array.from(context.querySelectorAll(selector));
-    } else if (typeof selector === 'function') {
+    if (!selector) { this.elements = []; }
+    else if (selector instanceof Node) { this.elements = [selector]; }
+    else if (selector instanceof NodeList || Array.isArray(selector)) { this.elements = Array.from(selector); }
+    else if (typeof selector === 'string') { this.elements = Array.from(context.querySelectorAll(selector)); }
+    else if (typeof selector === 'function') {
       // دعم $(function(){}) مباشرة
       Bquery.ready(selector);
       this.elements = [document];
     } else {
       this.elements = [];
     }
+
+    
   }
 
   /* --------------------------------------------------
@@ -329,14 +327,13 @@ class Bquery {
   }
 }
 
-/* --------------------------------------------------
- * اختصارات
- * -------------------------------------------------- */
-function $(selector, context) {
+// --------------------------------------------------
+// اختصارات
+// --------------------------------------------------
+export function $(selector, context) {
   return new Bquery(selector, context);
 }
-
-function $$(selector, context) {
+export function $$(selector, context) {
   return new Bquery(context ? context.querySelectorAll(selector) : document.querySelectorAll(selector));
 }
 
@@ -347,6 +344,74 @@ window.$$ = $$;
 
 export default Bquery;
 
-export {
-  $, $$,
-};
+
+
+
+/* example $$ 
+  const _elements = $$('.class');
+  _elements.each(_el => {console.log(_el)})
+  .addClass('checked')
+  .hide();
+*/
+
+
+// #region : Function : دوال مساعدة
+
+/**
+ * @description 
+ * @param {نوع_البيان} الاسم - وصف المعامل.
+ * @param {نوع_البيان} الاسم - وصف المعامل.
+ * @returns {نوع_البيان} - وصف النتيجة.
+ * @example
+ *   const result = myFunction(arg1, arg2);
+ */
+/**
+* @function sleep :-> 💤 أداة نوم متقدمة
+* @description: يُؤخّر التنفيذ لمدة مُحددة مع دعم الإلغاء.
+* @param {number} مللي ثانية - مدة الانتظار بالملي ثانية.
+* @param {AbortSignal} [signal] - إشارة اختيارية لإلغاء التأخير.
+* @returns {Promise<void>}: يُحلّ بعد الوقت المُحدد ما لم يُلغَ.
+ * 
+ * @example
+ *   await sleep(1000); // wait 1 second
+ * 
+ *   // Example with cancel:
+ *   const controller = new AbortController();
+ *   const promise = sleep(5000, controller.signal);
+ *   setTimeout(() => controller.abort('User canceled'), 2000);
+ *   await promise.catch(console.error);
+ */
+export function sleep(ms, signal) {
+  return new Promise((resolve, reject) => {
+    if (typeof ms !== 'number' || ms < 0)
+      return reject(new TypeError('sleep(ms): ms must be a positive number'));
+
+    // إذا تم الإلغاء قبل البدء
+    if (signal?.aborted) { return reject(signal.reason || new Error('Sleep aborted before start')); }
+
+    const timeoutId = setTimeout(resolve, ms);
+
+    // التعامل مع الإلغاء أثناء الانتظار
+    if (signal) {
+      signal.addEventListener('abort', () => {
+        clearTimeout(timeoutId);
+        reject(signal.reason || new Error('Sleep aborted'));
+      }, { once: true });
+    }
+  });
+}
+
+
+
+
+/**
+ * @function اسم_الدالة
+ * @description وصف مختصر لوظيفة الدالة.
+ * @param {نوع_البيان} الاسم - وصف المعامل.
+ * @param {نوع_البيان} الاسم - وصف المعامل.
+ * @returns {نوع_البيان} - وصف النتيجة.
+ * @example
+ *   const result = myFunction(arg1, arg2);
+ */
+
+// #endregion
